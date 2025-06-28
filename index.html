@@ -39,6 +39,61 @@
             font-weight: 600;
         }
 
+        .group-code-display {
+            background-color: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #0066cc;
+            text-align: center;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        .main-content {
+            display: none;
+        }
+
+        .main-content.active {
+            display: block;
+        }
+
         .tab-navigation {
             display: flex;
             background-color: #fff;
@@ -110,6 +165,32 @@
             color: #0066cc;
         }
 
+        .participants-list {
+            max-height: 150px;
+            overflow-y: auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .participant-item {
+            padding: 5px 10px;
+            border-left: 3px solid #0066cc;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .participant-status {
+            width: 8px;
+            height: 8px;
+            background-color: #28a745;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
         .quick-note {
             background-color: #fff;
             border-radius: 12px;
@@ -168,6 +249,12 @@
             color: #333;
         }
 
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+            width: 100%;
+        }
+
         .btn:active {
             transform: scale(0.98);
         }
@@ -200,6 +287,7 @@
             margin-bottom: 10px;
             border-radius: 8px;
             border-left: 4px solid #0066cc;
+            position: relative;
         }
 
         .note-item .timestamp {
@@ -211,6 +299,14 @@
         .note-item .note-text {
             font-size: 16px;
             line-height: 1.5;
+        }
+
+        .note-item .author {
+            font-size: 12px;
+            color: #0066cc;
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
 
         .summary-section {
@@ -262,23 +358,39 @@
             cursor: pointer;
         }
 
-        .floating-timer {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background-color: #0066cc;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-weight: 600;
-            font-size: 18px;
-        }
-
         .icon {
             width: 20px;
             height: 20px;
             display: inline-block;
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #e0e0e0;
+            color: #666;
+            z-index: 1000;
+        }
+
+        .connection-status.online {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .connection-status.offline {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .export-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
         }
 
         @media (max-width: 375px) {
@@ -295,175 +407,176 @@
 </head>
 <body>
     <div class="app-container">
-        <div class="header">
-            <h1>Walk&Talk Session</h1>
-        </div>
-
-        <div class="tab-navigation">
-            <div class="tab active" onclick="switchTab('session')">Session</div>
-            <div class="tab" onclick="switchTab('notes')">Anteckningar</div>
-            <div class="tab" onclick="switchTab('summary')">Sammanfattning</div>
-        </div>
-
-        <!-- Session Tab -->
-        <div id="session-tab" class="tab-content active">
-            <div class="session-info">
-                <h2>Pågående Session</h2>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="icon">📅</span>
-                        <span id="session-date"></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="icon">👥</span>
-                        <span id="participants">0 deltagare</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="icon">📍</span>
-                        <span>Walk&Talk Route</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="quick-note">
-                <h3>Snabb anteckning</h3>
-                <input type="text" class="note-input" id="quick-note-input" placeholder="Skriv en snabb anteckning...">
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="addQuickNote()">
-                        <span class="icon">💾</span>
-                        Spara
-                    </button>
-                    <button class="btn btn-secondary" onclick="clearQuickNote()">
-                        <span class="icon">🗑️</span>
-                        Rensa
-                    </button>
-                </div>
-                <button class="btn btn-voice" id="voice-btn" onclick="toggleVoiceRecording()">
-                    <span class="icon">🎙️</span>
-                    <span id="voice-btn-text">Starta röstinspelning</span>
+        <div class="connection-status" id="connection-status">Offline</div>
+        
+        <!-- Login Screen -->
+        <div class="login-screen" id="login-screen">
+            <div class="login-box">
+                <h2>Walk&Talk Session</h2>
+                <input type="text" class="login-input" id="user-name" placeholder="Ditt namn">
+                <input type="text" class="login-input" id="group-code" placeholder="Gruppkod (t.ex. GRUPP1)">
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="joinSession()">
+                    Gå med i session
                 </button>
-                <p style="font-size: 12px; color: #666; margin-top: 10px; text-align: center;">
-                    Rösttranskribering aktiverad för svenska 🇸🇪
-                </p>
-            </div>
-        </div>
-
-        <!-- Notes Tab -->
-        <div id="notes-tab" class="tab-content">
-            <div class="notes-list" id="notes-list">
-                <!-- Notes will be dynamically added here -->
-            </div>
-        </div>
-
-        <!-- Summary Tab -->
-        <div id="summary-tab" class="tab-content">
-            <div class="summary-section">
-                <h3>Session sammanfattning</h3>
-                <textarea class="summary-textarea" id="summary-text" placeholder="Skriv en sammanfattning av sessionen..."></textarea>
-            </div>
-
-            <div class="summary-section">
-                <h3>Åtgärdspunkter</h3>
-                <ul class="action-items" id="action-items">
-                    <li class="action-item">
-                        <input type="checkbox" id="action1">
-                        <label for="action1">Exempel: Boka uppföljningsmöte</label>
-                    </li>
-                </ul>
-                <button class="btn btn-primary" onclick="addActionItem()">
-                    <span class="icon">➕</span>
-                    Lägg till åtgärd
+                <button class="btn btn-success" onclick="createNewSession()">
+                    Skapa ny session
                 </button>
             </div>
+        </div>
 
-            <div class="summary-section">
-                <h3>Dela sammanfattning</h3>
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="shareViaEmail()">
-                        <span class="icon">📧</span>
-                        E-post
+        <!-- Main Content -->
+        <div class="main-content" id="main-content">
+            <div class="header">
+                <h1>Walk&Talk Session</h1>
+                <div class="group-code-display" id="group-code-display">Gruppkod: -</div>
+            </div>
+
+            <div class="tab-navigation">
+                <div class="tab active" onclick="switchTab('session')">Session</div>
+                <div class="tab" onclick="switchTab('notes')">Anteckningar</div>
+                <div class="tab" onclick="switchTab('summary')">Sammanfattning</div>
+            </div>
+
+            <!-- Session Tab -->
+            <div id="session-tab" class="tab-content active">
+                <div class="session-info">
+                    <h2>Session Information</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="icon">📅</span>
+                            <span id="session-date"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="icon">📝</span>
+                            <span id="note-count">0 anteckningar</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="icon">✅</span>
+                            <span id="action-count">0 åtgärdspunkter</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="icon">👥</span>
+                            <span id="participant-count">0 deltagare</span>
+                        </div>
+                    </div>
+                    <div class="participants-list" id="participants-list"></div>
+                </div>
+
+                <div class="quick-note">
+                    <h3>Snabb anteckning</h3>
+                    <input type="text" class="note-input" id="quick-note-input" placeholder="Skriv en snabb anteckning...">
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="addQuickNote()">
+                            <span class="icon">💾</span>
+                            Spara
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearQuickNote()">
+                            <span class="icon">🗑️</span>
+                            Rensa
+                        </button>
+                    </div>
+                    <button class="btn btn-voice" id="voice-btn" onclick="toggleVoiceRecording()">
+                        <span class="icon">🎙️</span>
+                        <span id="voice-btn-text">Starta röstinspelning</span>
                     </button>
-                    <button class="btn btn-secondary" onclick="copyToClipboard()">
-                        <span class="icon">📋</span>
-                        Kopiera
+                    <p style="font-size: 12px; color: #666; margin-top: 10px; text-align: center;">
+                        Rösttranskribering aktiverad för svenska 🇸🇪
+                    </p>
+                </div>
+            </div>
+
+            <!-- Notes Tab -->
+            <div id="notes-tab" class="tab-content">
+                <div class="notes-list" id="notes-list">
+                    <!-- Notes will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Summary Tab -->
+            <div id="summary-tab" class="tab-content">
+                <div class="summary-section">
+                    <h3>Session sammanfattning</h3>
+                    <textarea class="summary-textarea" id="summary-text" placeholder="Skriv en sammanfattning av sessionen..."></textarea>
+                </div>
+
+                <div class="summary-section">
+                    <h3>Åtgärdspunkter</h3>
+                    <ul class="action-items" id="action-items">
+                        <!-- Action items will be dynamically added here -->
+                    </ul>
+                    <button class="btn btn-primary" onclick="addActionItem()">
+                        <span class="icon">➕</span>
+                        Lägg till åtgärd
                     </button>
+                </div>
+
+                <div class="summary-section">
+                    <h3>Dela sammanfattning</h3>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="shareViaEmail()">
+                            <span class="icon">📧</span>
+                            E-post
+                        </button>
+                        <button class="btn btn-secondary" onclick="copyToClipboard()">
+                            <span class="icon">📋</span>
+                            Kopiera
+                        </button>
+                    </div>
+                    <div class="export-section">
+                        <button class="btn btn-success" onclick="exportToExcel()">
+                            <span class="icon">📊</span>
+                            Exportera till Excel
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="floating-timer" id="timer">00:00</div>
     </div>
 
+    <!-- Firebase - KOMMENTERA BORT DESSA RADER FÖR ATT KÖRA UTAN FIREBASE -->
+    <!--
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    -->
+
     <script>
+        // Firebase configuration - AKTIVERA NÄR DU HAR SKAPAT FIREBASE-PROJEKT
+        /*
+        const firebaseConfig = {
+            apiKey: "DIN-API-NYCKEL",
+            authDomain: "DITT-PROJEKT.firebaseapp.com",
+            databaseURL: "https://DITT-PROJEKT-default-rtdb.firebaseio.com",
+            projectId: "DITT-PROJEKT",
+            storageBucket: "DITT-PROJEKT.appspot.com",
+            messagingSenderId: "DITT-ID",
+            appId: "DIN-APP-ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        */
+        
+        // Temporär lösning utan Firebase
+        const firebase = null;
+        const database = null;
+
+        let currentUser = null;
+        let currentGroup = null;
+        let sessionRef = null;
         let notes = [];
+        let participants = {};
+        let actionItems = {};
         let isRecording = false;
-        let startTime = Date.now();
-        let timerInterval;
+        let recognition;
+        let transcriptionText = '';
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('session-date').textContent = new Date().toLocaleDateString('sv-SE');
-            startTimer();
-            loadStoredData();
+            initSpeechRecognition();
         });
 
-        function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            // Show selected tab
-            document.getElementById(tabName + '-tab').classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        function startTimer() {
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        function updateTimer() {
-            const elapsed = Math.floor((Date.now() - startTime) / 1000);
-            const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
-            const seconds = (elapsed % 60).toString().padStart(2, '0');
-            document.getElementById('timer').textContent = `${minutes}:${seconds}`;
-        }
-
-        function addQuickNote() {
-            const input = document.getElementById('quick-note-input');
-            const noteText = input.value.trim();
-            
-            if (noteText) {
-                const note = {
-                    id: Date.now(),
-                    text: noteText,
-                    timestamp: new Date().toLocaleTimeString('sv-SE'),
-                    type: 'text'
-                };
-                
-                notes.push(note);
-                input.value = '';
-                updateNotesList();
-                saveToLocalStorage();
-                
-                // Show feedback
-                input.style.borderColor = '#28a745';
-                setTimeout(() => {
-                    input.style.borderColor = '#e0e0e0';
-                }, 1000);
-            }
-        }
-
-        function clearQuickNote() {
-            document.getElementById('quick-note-input').value = '';
-        }
-
-        let recognition;
-        let transcriptionText = '';
-        
         // Initialize speech recognition
         function initSpeechRecognition() {
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -528,6 +641,210 @@
             return false;
         }
 
+        function generateGroupCode() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numbers = '0123456789';
+            let code = '';
+            for (let i = 0; i < 3; i++) {
+                code += letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+            for (let i = 0; i < 3; i++) {
+                code += numbers.charAt(Math.floor(Math.random() * numbers.length));
+            }
+            return code;
+        }
+
+        function createNewSession() {
+            const userName = document.getElementById('user-name').value.trim();
+            if (!userName) {
+                alert('Ange ditt namn först!');
+                return;
+            }
+
+            const groupCode = generateGroupCode();
+            document.getElementById('group-code').value = groupCode;
+            joinSession();
+        }
+
+        function joinSession() {
+            const userName = document.getElementById('user-name').value.trim();
+            const groupCode = document.getElementById('group-code').value.trim().toUpperCase();
+
+            if (!userName || !groupCode) {
+                alert('Fyll i både namn och gruppkod!');
+                return;
+            }
+
+            currentUser = userName;
+            currentGroup = groupCode;
+
+            // Temporär lösning utan Firebase
+            if (!firebase) {
+                // Visa huvudinnehåll direkt
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').classList.add('active');
+                document.getElementById('group-code-display').textContent = 'Gruppkod: ' + groupCode + ' (Offline-läge)';
+                
+                // Visa offline-status
+                const status = document.getElementById('connection-status');
+                status.textContent = 'Offline-läge';
+                status.className = 'connection-status offline';
+                
+                // Ladda lokal data
+                loadLocalData();
+                return;
+            }
+
+            // Firebase-kod (när aktiverad)
+            sessionRef = database.ref('sessions/' + groupCode);
+
+            // Set user as online
+            const userRef = sessionRef.child('participants/' + userName);
+            userRef.set({
+                name: userName,
+                joinedAt: firebase.database.ServerValue.TIMESTAMP,
+                online: true
+            });
+
+            // Set up disconnect handling
+            userRef.onDisconnect().update({ online: false });
+
+            // Listen for changes
+            setupRealtimeListeners();
+
+            // Show main content
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-content').classList.add('active');
+            document.getElementById('group-code-display').textContent = 'Gruppkod: ' + groupCode;
+
+            // Update connection status
+            const connectedRef = database.ref('.info/connected');
+            connectedRef.on('value', (snapshot) => {
+                const status = document.getElementById('connection-status');
+                if (snapshot.val() === true) {
+                    status.textContent = 'Online';
+                    status.className = 'connection-status online';
+                } else {
+                    status.textContent = 'Offline';
+                    status.className = 'connection-status offline';
+                }
+            });
+        }
+
+        function setupRealtimeListeners() {
+            // Listen for notes
+            sessionRef.child('notes').on('value', (snapshot) => {
+                notes = [];
+                snapshot.forEach((childSnapshot) => {
+                    notes.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+                updateNotesList();
+                updateCounters();
+            });
+
+            // Listen for participants
+            sessionRef.child('participants').on('value', (snapshot) => {
+                participants = snapshot.val() || {};
+                updateParticipantsList();
+                updateCounters();
+            });
+
+            // Listen for action items
+            sessionRef.child('actionItems').on('value', (snapshot) => {
+                actionItems = snapshot.val() || {};
+                updateActionItemsList();
+                updateCounters();
+            });
+
+            // Listen for summary
+            sessionRef.child('summary').on('value', (snapshot) => {
+                const summary = snapshot.val();
+                if (summary && summary !== document.getElementById('summary-text').value) {
+                    document.getElementById('summary-text').value = summary;
+                }
+            });
+        }
+
+        function updateParticipantsList() {
+            const list = document.getElementById('participants-list');
+            const participantArray = Object.entries(participants);
+            
+            list.innerHTML = participantArray.map(([name, data]) => `
+                <div class="participant-item">
+                    <span>${name}</span>
+                    <span class="participant-status" style="background-color: ${data.online ? '#28a745' : '#dc3545'}"></span>
+                </div>
+            `).join('');
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function updateCounters() {
+            // Update note counter
+            document.getElementById('note-count').textContent = notes.length + ' anteckningar';
+            
+            // Update action counter
+            const actionCount = Object.keys(actionItems).length;
+            document.getElementById('action-count').textContent = actionCount + ' åtgärdspunkter';
+
+            // Update participant counter
+            const onlineCount = Object.values(participants).filter(p => p.online).length;
+            document.getElementById('participant-count').textContent = onlineCount + ' deltagare online';
+        }
+
+        function addQuickNote() {
+            const input = document.getElementById('quick-note-input');
+            const noteText = input.value.trim();
+            
+            if (noteText) {
+                const note = {
+                    id: Date.now(),
+                    text: noteText,
+                    timestamp: new Date().toLocaleTimeString('sv-SE'),
+                    author: currentUser,
+                    type: 'text'
+                };
+                
+                // Om Firebase är aktiverat
+                if (sessionRef) {
+                    sessionRef.child('notes').push(note);
+                } else {
+                    // Lokal lagring
+                    notes.push(note);
+                    updateNotesList();
+                    updateCounters();
+                    saveLocalData();
+                }
+                
+                input.value = '';
+                
+                // Show feedback
+                input.style.borderColor = '#28a745';
+                setTimeout(() => {
+                    input.style.borderColor = '#e0e0e0';
+                }, 1000);
+            }
+        }
+
+        function clearQuickNote() {
+            document.getElementById('quick-note-input').value = '';
+        }
+
         function toggleVoiceRecording() {
             const voiceBtn = document.getElementById('voice-btn');
             const voiceBtnText = document.getElementById('voice-btn-text');
@@ -573,12 +890,20 @@
                     id: Date.now(),
                     text: '🎙️ ' + transcriptionText.trim(),
                     timestamp: new Date().toLocaleTimeString('sv-SE'),
+                    author: currentUser,
                     type: 'voice'
                 };
                 
-                notes.push(note);
-                updateNotesList();
-                saveToLocalStorage();
+                // Om Firebase är aktiverat
+                if (sessionRef) {
+                    sessionRef.child('notes').push(note);
+                } else {
+                    // Lokal lagring
+                    notes.push(note);
+                    updateNotesList();
+                    updateCounters();
+                    saveLocalData();
+                }
                 
                 // Clear the input field
                 document.getElementById('quick-note-input').value = '';
@@ -597,23 +922,80 @@
                 <div class="note-item">
                     <div class="timestamp">${note.timestamp}</div>
                     <div class="note-text">${note.text}</div>
+                    <div class="author">${note.author}</div>
                 </div>
             `).reverse().join('');
+        }
+
+        function updateActionItemsList() {
+            const list = document.getElementById('action-items');
+            list.innerHTML = '';
+            
+            Object.entries(actionItems).forEach(([id, item]) => {
+                const li = document.createElement('li');
+                li.className = 'action-item';
+                li.innerHTML = `
+                    <input type="checkbox" id="${id}" ${item.completed ? 'checked' : ''} onchange="toggleActionItem('${id}')">
+                    <label for="${id}">${item.text}</label>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function toggleActionItem(id) {
+            const checkbox = document.getElementById(id);
+            sessionRef.child('actionItems/' + id + '/completed').set(checkbox.checked);
         }
 
         function addActionItem() {
             const actionText = prompt('Skriv in ny åtgärdspunkt:');
             if (actionText) {
-                const actionsList = document.getElementById('action-items');
-                const newItem = document.createElement('li');
-                newItem.className = 'action-item';
-                newItem.innerHTML = `
-                    <input type="checkbox" id="action${Date.now()}">
-                    <label for="action${Date.now()}">${actionText}</label>
-                `;
-                actionsList.appendChild(newItem);
-                saveToLocalStorage();
+                const newItem = {
+                    text: actionText,
+                    completed: false,
+                    author: currentUser
+                };
+                
+                if (sessionRef) {
+                    sessionRef.child('actionItems').push(newItem);
+                } else {
+                    // Lokal lagring
+                    const id = 'action' + Date.now();
+                    actionItems[id] = newItem;
+                    updateActionItemsList();
+                    updateCounters();
+                    saveLocalData();
+                }
             }
+        }
+
+        // Lokala lagringsfunktioner
+        function saveLocalData() {
+            const data = {
+                notes: notes,
+                actionItems: actionItems,
+                summary: document.getElementById('summary-text').value,
+                group: currentGroup,
+                user: currentUser
+            };
+            localStorage.setItem('walkTalkSession_' + currentGroup, JSON.stringify(data));
+        }
+
+        function loadLocalData() {
+            const stored = localStorage.getItem('walkTalkSession_' + currentGroup);
+            if (stored) {
+                const data = JSON.parse(stored);
+                notes = data.notes || [];
+                actionItems = data.actionItems || {};
+                document.getElementById('summary-text').value = data.summary || '';
+                updateNotesList();
+                updateActionItemsList();
+                updateCounters();
+            }
+            
+            // Visa bara aktuell användare i deltagarlistan
+            participants[currentUser] = { name: currentUser, online: true };
+            updateParticipantsList();
         }
 
         function shareViaEmail() {
@@ -626,37 +1008,52 @@
 
         function copyToClipboard() {
             const summary = document.getElementById('summary-text').value;
-            const actionItems = Array.from(document.querySelectorAll('.action-item label')).map(label => `- ${label.textContent}`).join('\n');
+            const actionItemsText = Object.values(actionItems).map(item => `- ${item.text} ${item.completed ? '✓' : ''}`).join('\n');
             
-            const fullText = `Walk&Talk Sammanfattning\n${new Date().toLocaleDateString('sv-SE')}\n\n${summary}\n\nÅtgärdspunkter:\n${actionItems}`;
+            const fullText = `Walk&Talk Sammanfattning\n${new Date().toLocaleDateString('sv-SE')}\nGruppkod: ${currentGroup}\n\n${summary}\n\nÅtgärdspunkter:\n${actionItemsText}`;
             
             navigator.clipboard.writeText(fullText).then(() => {
                 alert('Sammanfattning kopierad!');
             });
         }
 
-        function saveToLocalStorage() {
-            const data = {
-                notes: notes,
-                summary: document.getElementById('summary-text').value,
-                startTime: startTime
-            };
-            localStorage.setItem('walkTalkSession', JSON.stringify(data));
-        }
+        function exportToExcel() {
+            // Create CSV content
+            let csvContent = "Walk&Talk Session Export\n";
+            csvContent += `Datum:,${new Date().toLocaleDateString('sv-SE')}\n`;
+            csvContent += `Gruppkod:,${currentGroup}\n\n`;
+            
+            csvContent += "Anteckningar\n";
+            csvContent += "Tid,Text,Författare\n";
+            notes.forEach(note => {
+                csvContent += `${note.timestamp},"${note.text.replace(/"/g, '""')}",${note.author}\n`;
+            });
+            
+            csvContent += "\nÅtgärdspunkter\n";
+            csvContent += "Åtgärd,Status,Ansvarig\n";
+            Object.values(actionItems).forEach(item => {
+                csvContent += `"${item.text.replace(/"/g, '""')}",${item.completed ? 'Klar' : 'Ej klar'},${item.author}\n`;
+            });
+            
+            csvContent += "\nSammanfattning\n";
+            csvContent += `"${document.getElementById('summary-text').value.replace(/"/g, '""')}"\n`;
 
-        function loadStoredData() {
-            const stored = localStorage.getItem('walkTalkSession');
-            if (stored) {
-                const data = JSON.parse(stored);
-                notes = data.notes || [];
-                document.getElementById('summary-text').value = data.summary || '';
-                startTime = data.startTime || Date.now();
-                updateNotesList();
-            }
+            // Create blob and download
+            const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `WalkTalk_${currentGroup}_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
         }
 
         // Auto-save summary
-        document.getElementById('summary-text').addEventListener('input', saveToLocalStorage);
+        document.getElementById('summary-text').addEventListener('input', function() {
+            if (sessionRef) {
+                sessionRef.child('summary').set(this.value);
+            } else {
+                saveLocalData();
+            }
+        });
     </script>
 </body>
 </html>

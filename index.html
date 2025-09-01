@@ -3,1055 +3,958 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Walk&Talk Session Manager</title>
+    <title>iTid Konferensen 2025</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
-
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f5f5f5;
+            line-height: 1.6;
             color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            overflow-x: hidden;
+            padding-bottom: 80px;
         }
-
-        .app-container {
-            max-width: 100%;
-            margin: 0 auto;
-            background-color: white;
-            min-height: 100vh;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .header h1 {
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .group-code-display {
-            background-color: rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 20px;
-            margin-top: 10px;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .login-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-            padding: 20px;
-        }
-
-        .login-box {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .login-box h2 {
-            margin-bottom: 20px;
-            color: #0066cc;
-            text-align: center;
-        }
-
-        .login-input {
-            width: 100%;
+        
+        .mobile-header {
+            background: white;
             padding: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        .login-input:focus {
-            outline: none;
-            border-color: #0066cc;
-        }
-
-        .main-content {
-            display: none;
-        }
-
-        .main-content.active {
-            display: block;
-        }
-
-        .tab-navigation {
-            display: flex;
-            background-color: #fff;
-            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
         }
-
-        .tab {
-            flex: 1;
-            padding: 15px;
+        
+        .logo {
+            font-size: 2em;
+            color: #667eea;
+            font-weight: bold;
             text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
+        }
+        
+        .tagline {
+            text-align: center;
             color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
         }
-
-        .tab.active {
-            color: #0066cc;
-            border-bottom: 3px solid #0066cc;
+        
+        .mobile-nav {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(255,255,255,0.9);
+            -webkit-overflow-scrolling: touch;
         }
-
+        
+        .nav-pill {
+            padding: 10px 20px;
+            background: white;
+            border-radius: 25px;
+            white-space: nowrap;
+            border: 2px solid #e0e0e0;
+            color: #666;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        .nav-pill.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .content-container {
+            padding: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
         .tab-content {
             display: none;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
+            animation: slideIn 0.3s ease;
         }
-
+        
         .tab-content.active {
             display: block;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
         }
-
-        .session-info {
-            background-color: #f8f9fa;
+        
+        .card {
+            background: white;
+            border-radius: 15px;
             padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .session-info h2 {
-            font-size: 20px;
             margin-bottom: 15px;
-            color: #0066cc;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
-        .info-grid {
-            display: grid;
-            gap: 10px;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .info-item i {
-            margin-right: 10px;
-            color: #0066cc;
-        }
-
-        .participants-list {
-            max-height: 150px;
-            overflow-y: auto;
-            background-color: white;
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
-        .participant-item {
-            padding: 5px 10px;
-            border-left: 3px solid #0066cc;
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .participant-status {
-            width: 8px;
-            height: 8px;
-            background-color: #28a745;
-            border-radius: 50%;
-            margin-left: 10px;
-        }
-
-        .quick-note {
-            background-color: #fff;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .quick-note h3 {
-            margin-bottom: 15px;
+        
+        .card h2 {
             color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
         }
-
-        .note-input {
-            width: 100%;
+        
+        .card h3 {
+            color: #667eea;
+            margin: 15px 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .voice-input-container {
+            background: #f8f9fa;
+            border-radius: 15px;
             padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            transition: border-color 0.3s ease;
+            margin: 15px 0;
         }
-
-        .note-input:focus {
-            outline: none;
-            border-color: #0066cc;
-        }
-
-        .button-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 12px 20px;
+        
+        .voice-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            transition: transform 0.3s;
         }
-
-        .btn-primary {
-            background-color: #0066cc;
-            color: white;
+        
+        .voice-button:active {
+            transform: scale(0.95);
         }
-
-        .btn-secondary {
-            background-color: #e0e0e0;
-            color: #333;
-        }
-
-        .btn-success {
-            background-color: #28a745;
-            color: white;
-            width: 100%;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-voice {
-            background-color: #dc3545;
-            color: white;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .btn-voice.recording {
+        
+        .voice-button.recording {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             animation: pulse 1.5s infinite;
         }
-
+        
         @keyframes pulse {
             0% { opacity: 1; }
             50% { opacity: 0.7; }
             100% { opacity: 1; }
         }
-
-        .notes-list {
-            max-height: 400px;
-            overflow-y: auto;
+        
+        .mic-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
         }
-
-        .note-item {
-            background-color: #f8f9fa;
+        
+        textarea {
+            width: 100%;
             padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .button {
+            flex: 1;
+            min-width: 140px;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .button:active {
+            transform: scale(0.95);
+        }
+        
+        .button.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .button.success {
+            background: #4CAF50;
+        }
+        
+        .reflection-card {
+            background: #f0f8ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .reflection-question {
+            font-weight: 600;
+            color: #667eea;
             margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 4px solid #0066cc;
+        }
+        
+        .info-box {
+            background: #e8f4ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-date {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-right: 15px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .timeline-content {
+            flex: 1;
+        }
+        
+        .transcription-box {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            min-height: 100px;
             position: relative;
         }
-
-        .note-item .timestamp {
-            font-size: 12px;
+        
+        .transcription-text {
             color: #666;
-            margin-bottom: 5px;
+            font-style: italic;
         }
-
-        .note-item .note-text {
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .note-item .author {
-            font-size: 12px;
-            color: #0066cc;
+        
+        .copy-button {
             position: absolute;
             top: 10px;
             right: 10px;
-        }
-
-        .summary-section {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-
-        .summary-section h3 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .summary-textarea {
-            width: 100%;
-            min-height: 150px;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            resize: vertical;
-        }
-
-        .action-items {
-            list-style: none;
-            padding: 0;
-        }
-
-        .action-item {
-            background-color: #f8f9fa;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .action-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9em;
             cursor: pointer;
         }
-
-        .action-item label {
-            flex: 1;
-            cursor: pointer;
+        
+        .status-message {
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+            display: none;
         }
-
-        .icon {
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-        }
-
-        .connection-status {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            background-color: #e0e0e0;
-            color: #666;
-            z-index: 1000;
-        }
-
-        .connection-status.online {
-            background-color: #d4edda;
+        
+        .status-message.success {
+            background: #d4edda;
             color: #155724;
+            display: block;
         }
-
-        .connection-status.offline {
-            background-color: #f8d7da;
+        
+        .status-message.error {
+            background: #f8d7da;
             color: #721c24;
+            display: block;
         }
-
-        .export-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
+        
+        .quick-response {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            margin: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
-
-        @media (max-width: 375px) {
-            .header h1 {
-                font-size: 20px;
+        
+        .quick-response:active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            z-index: 100;
+        }
+        
+        .bottom-nav-item {
+            padding: 10px;
+            color: #666;
+            text-align: center;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+        
+        .bottom-nav-item.active {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 380px) {
+            .mobile-header {
+                padding: 10px;
             }
             
-            .tab {
-                font-size: 14px;
-                padding: 12px 5px;
+            .logo {
+                font-size: 1.5em;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .button {
+                min-width: 100px;
+                font-size: 0.9em;
+            }
+        }
+        
+        /* iOS specific styling */
+        @supports (-webkit-touch-callout: none) {
+            textarea {
+                font-size: 16px !important;
             }
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="connection-status" id="connection-status">Offline</div>
+    <div class="mobile-header">
+        <div class="logo">iTid</div>
+        <div class="tagline">Stora Konferensen 2025</div>
+    </div>
+    
+    <div class="mobile-nav">
+        <div class="nav-pill active" onclick="showTab('overview', this)">Start</div>
+        <div class="nav-pill" onclick="showTab('mission', this)">Mitt Varför</div>
+        <div class="nav-pill" onclick="showTab('superpower', this)">Superkraft</div>
+        <div class="nav-pill" onclick="showTab('timeline', this)">Historia</div>
+        <div class="nav-pill" onclick="showTab('program', this)">Program</div>
+    </div>
+    
+    <div class="content-container">
+        <!-- Status meddelande -->
+        <div id="statusMessage" class="status-message"></div>
         
-        <!-- Login Screen -->
-        <div class="login-screen" id="login-screen">
-            <div class="login-box">
-                <h2>Walk&Talk Session</h2>
-                <input type="text" class="login-input" id="user-name" placeholder="Ditt namn">
-                <input type="text" class="login-input" id="group-code" placeholder="Gruppkod (t.ex. GRUPP1)">
-                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="joinSession()">
-                    Gå med i session
-                </button>
-                <button class="btn btn-success" onclick="createNewSession()">
-                    Skapa ny session
+        <!-- Start/Översikt -->
+        <div id="overview" class="tab-content active">
+            <div class="card">
+                <h2>Välkommen! 👋</h2>
+                <p>Använd denna app för att delta i konferensens aktiviteter. Du kan:</p>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li>Tala in dina reflektioner</li>
+                    <li>Skriva direkt i appen</li>
+                    <li>Spara och dela dina tankar</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>🎯 Dagens aktivitet</h3>
+                <div class="info-box">
+                    <strong>Nu kör vi:</strong> Identifiera din superkraft
+                    <br>
+                    <button class="button" style="margin-top: 10px; width: 100%;" onclick="showTab('superpower')">
+                        Starta övningen
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>📱 Tips för mobilanvändning</h3>
+                <ul style="padding-left: 20px;">
+                    <li>Tryck på mikrofonen för att tala in</li>
+                    <li>Transkriberingen visas automatiskt</li>
+                    <li>Du kan redigera texten efteråt</li>
+                    <li>Alla svar sparas lokalt på din telefon</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Mitt Varför -->
+        <div id="mission" class="tab-content">
+            <div class="card">
+                <h2>Mitt Varför</h2>
+                <p style="margin-bottom: 15px;">Vad betyder "En framtid där vi bor" för dig?</p>
+                
+                <div class="reflection-card">
+                    <div class="reflection-question">Reflektera över:</div>
+                    <div class="quick-response" onclick="addQuickText('mission1', 'Jag vill bidra till')">Jag vill bidra till...</div>
+                    <div class="quick-response" onclick="addQuickText('mission1', 'För mig betyder det')">För mig betyder det...</div>
+                    <div class="quick-response" onclick="addQuickText('mission1', 'Mitt hjärta ligger i')">Mitt hjärta ligger i...</div>
+                </div>
+                
+                <div class="voice-input-container">
+                    <button class="voice-button" onclick="startRecording('mission1')">
+                        <svg class="mic-icon" viewBox="0 0 24 24">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                        <span id="mission1-btn-text">Tala in ditt varför</span>
+                    </button>
+                </div>
+                
+                <textarea id="mission1" placeholder="Ditt varför kommer att visas här..."></textarea>
+                
+                <div class="button-group">
+                    <button class="button success" onclick="saveMissionMobile()">Spara</button>
+                    <button class="button secondary" onclick="clearField('mission1')">Rensa</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Vad behövs för att boosta det orubbliga?</h3>
+                
+                <div class="voice-input-container">
+                    <button class="voice-button" onclick="startRecording('mission2')">
+                        <svg class="mic-icon" viewBox="0 0 24 24">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                        <span id="mission2-btn-text">Tala in dina tankar</span>
+                    </button>
+                </div>
+                
+                <textarea id="mission2" placeholder="Vad behöver vi för att lyckas?"></textarea>
+            </div>
+        </div>
+        
+        <!-- Superkraft -->
+        <div id="superpower" class="tab-content">
+            <div class="card">
+                <h2>Din Superkraft</h2>
+                
+                <div class="info-box">
+                    <strong>Vad är en superkraft?</strong><br>
+                    Det du älskar, är bra på, och som skapar värde för andra.
+                </div>
+                
+                <div class="reflection-card">
+                    <div class="reflection-question">1. Vad ger dig energi?</div>
+                    <button class="voice-button" onclick="startRecording('super1')">
+                        <svg class="mic-icon" viewBox="0 0 24 24">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                        <span id="super1-btn-text">Tala in</span>
+                    </button>
+                    <textarea id="super1" placeholder="När känner du flow?"></textarea>
+                </div>
+                
+                <div class="reflection-card">
+                    <div class="reflection-question">2. Vad är du bra på?</div>
+                    <button class="voice-button" onclick="startRecording('super2')">
+                        <svg class="mic-icon" viewBox="0 0 24 24">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                        <span id="super2-btn-text">Tala in</span>
+                    </button>
+                    <textarea id="super2" placeholder="Vad ber andra dig om hjälp med?"></textarea>
+                </div>
+                
+                <div class="reflection-card">
+                    <div class="reflection-question">3. När gör du skillnad?</div>
+                    <button class="voice-button" onclick="startRecording('super3')">
+                        <svg class="mic-icon" viewBox="0 0 24 24">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                        <span id="super3-btn-text">Tala in</span>
+                    </button>
+                    <textarea id="super3" placeholder="Vad känns meningsfullt?"></textarea>
+                </div>
+                
+                <div class="reflection-card">
+                    <div class="reflection-question">4. Vad gör du gärna?</div>
+                    <button class="voice-button" onclick="startRecording('super4')">
+                        <svg class="mic-icon" viewBox="0 0 24 24">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                        <span id="super4-btn-text">Tala in</span>
+                    </button>
+                    <textarea id="super4" placeholder="Även om du inte måste?"></textarea>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Formulera din superkraft</h3>
+                <div class="quick-response" onclick="addQuickText('superStatement', 'Min superkraft är att')">Min superkraft är att...</div>
+                <div class="quick-response" onclick="addQuickText('superStatement', 'Jag hjälper andra genom att')">Jag hjälper andra genom att...</div>
+                
+                <textarea id="superStatement" placeholder="Skriv din superkraft i en mening..."></textarea>
+                
+                <button class="button success" style="width: 100%; margin-top: 15px;" onclick="saveSuperpowerMobile()">
+                    Spara min superkraft
                 </button>
             </div>
         </div>
-
-        <!-- Main Content -->
-        <div class="main-content" id="main-content">
-            <div class="header">
-                <h1>Walk&Talk Session</h1>
-                <div class="group-code-display" id="group-code-display">Gruppkod: -</div>
-            </div>
-
-            <div class="tab-navigation">
-                <div class="tab active" onclick="switchTab('session')">Session</div>
-                <div class="tab" onclick="switchTab('notes')">Anteckningar</div>
-                <div class="tab" onclick="switchTab('summary')">Sammanfattning</div>
-            </div>
-
-            <!-- Session Tab -->
-            <div id="session-tab" class="tab-content active">
-                <div class="session-info">
-                    <h2>Session Information</h2>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="icon">📅</span>
-                            <span id="session-date"></span>
-                        </div>
-                        <div class="info-item">
-                            <span class="icon">📝</span>
-                            <span id="note-count">0 anteckningar</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="icon">✅</span>
-                            <span id="action-count">0 åtgärdspunkter</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="icon">👥</span>
-                            <span id="participant-count">0 deltagare</span>
-                        </div>
-                    </div>
-                    <div class="participants-list" id="participants-list"></div>
+        
+        <!-- Historia -->
+        <div id="timeline" class="tab-content">
+            <div class="card">
+                <h2>Din iTid-historia</h2>
+                
+                <div class="reflection-card">
+                    <div class="reflection-question">När började du?</div>
+                    <input type="text" id="startDate" placeholder="T.ex. Januari 2020" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px;">
                 </div>
-
-                <div class="quick-note">
-                    <h3>Snabb anteckning</h3>
-                    <input type="text" class="note-input" id="quick-note-input" placeholder="Skriv en snabb anteckning...">
-                    <div class="button-group">
-                        <button class="btn btn-primary" onclick="addQuickNote()">
-                            <span class="icon">💾</span>
-                            Spara
-                        </button>
-                        <button class="btn btn-secondary" onclick="clearQuickNote()">
-                            <span class="icon">🗑️</span>
-                            Rensa
-                        </button>
-                    </div>
-                    <button class="btn btn-voice" id="voice-btn" onclick="toggleVoiceRecording()">
-                        <span class="icon">🎙️</span>
-                        <span id="voice-btn-text">Starta röstinspelning</span>
+                
+                <div class="reflection-card">
+                    <div class="reflection-question">Hur har iTid utvecklats under din tid?</div>
+                    <button class="voice-button" onclick="startRecording('history')">
+                        <svg class="mic-icon" viewBox="0 0 24 24">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                        <span id="history-btn-text">Tala in din historia</span>
                     </button>
-                    <p style="font-size: 12px; color: #666; margin-top: 10px; text-align: center;">
-                        Rösttranskribering aktiverad för svenska 🇸🇪
-                    </p>
+                    <textarea id="history" placeholder="Vilka händelser har påverkat?"></textarea>
                 </div>
-            </div>
-
-            <!-- Notes Tab -->
-            <div id="notes-tab" class="tab-content">
-                <div class="notes-list" id="notes-list">
-                    <!-- Notes will be dynamically added here -->
-                </div>
-            </div>
-
-            <!-- Summary Tab -->
-            <div id="summary-tab" class="tab-content">
-                <div class="summary-section">
-                    <h3>Session sammanfattning</h3>
-                    <textarea class="summary-textarea" id="summary-text" placeholder="Skriv en sammanfattning av sessionen..."></textarea>
-                </div>
-
-                <div class="summary-section">
-                    <h3>Åtgärdspunkter</h3>
-                    <ul class="action-items" id="action-items">
-                        <!-- Action items will be dynamically added here -->
-                    </ul>
-                    <button class="btn btn-primary" onclick="addActionItem()">
-                        <span class="icon">➕</span>
-                        Lägg till åtgärd
+                
+                <div class="reflection-card">
+                    <div class="reflection-question">Vad ser du framåt?</div>
+                    <button class="voice-button" onclick="startRecording('future')">
+                        <svg class="mic-icon" viewBox="0 0 24 24">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                        <span id="future-btn-text">Tala in din vision</span>
                     </button>
+                    <textarea id="future" placeholder="Vad vill du se hända?"></textarea>
                 </div>
-
-                <div class="summary-section">
-                    <h3>Dela sammanfattning</h3>
-                    <div class="button-group">
-                        <button class="btn btn-primary" onclick="shareViaEmail()">
-                            <span class="icon">📧</span>
-                            E-post
-                        </button>
-                        <button class="btn btn-secondary" onclick="copyToClipboard()">
-                            <span class="icon">📋</span>
-                            Kopiera
-                        </button>
-                    </div>
-                    <div class="export-section">
-                        <button class="btn btn-success" onclick="exportToExcel()">
-                            <span class="icon">📊</span>
-                            Exportera till Excel
-                        </button>
+                
+                <button class="button success" style="width: 100%;" onclick="saveTimelineMobile()">
+                    Spara min historia
+                </button>
+            </div>
+        </div>
+        
+        <!-- Program -->
+        <div id="program" class="tab-content">
+            <div class="card">
+                <h2>Program</h2>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Fredag</div>
+                    <div class="timeline-content">
+                        <strong>14:30-17:30</strong><br>
+                        Konferensstart<br>
+                        • En framtid där vi bor<br>
+                        • Mitt varför
                     </div>
                 </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Lördag</div>
+                    <div class="timeline-content">
+                        <strong>08:30-12:00</strong><br>
+                        Vår gemensamma historia<br><br>
+                        <strong>13:30-16:00</strong><br>
+                        Superkrafter
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Söndag</div>
+                    <div class="timeline-content">
+                        Social dag<br>
+                        Roliga aktiviteter
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Måndag</div>
+                    <div class="timeline-content">
+                        Resdag hem
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>📱 Digital sammanställning</h3>
+                <button class="button" style="width: 100%;" onclick="exportData()">
+                    Exportera mina svar
+                </button>
+                <button class="button secondary" style="width: 100%; margin-top: 10px;" onclick="shareData()">
+                    Dela med Copilot
+                </button>
             </div>
         </div>
     </div>
-
-    <!-- Firebase - KOMMENTERA BORT DESSA RADER FÖR ATT KÖRA UTAN FIREBASE -->
-    <!--
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    -->
-
+    
+    <div class="bottom-nav">
+        <div class="bottom-nav-item active" onclick="showTab('overview')">Start</div>
+        <div class="bottom-nav-item" onclick="showTab('mission')">Varför</div>
+        <div class="bottom-nav-item" onclick="showTab('superpower')">Superkraft</div>
+        <div class="bottom-nav-item" onclick="showTab('timeline')">Historia</div>
+    </div>
+    
     <script>
-        // Firebase configuration - AKTIVERA NÄR DU HAR SKAPAT FIREBASE-PROJEKT
-        /*
-        const firebaseConfig = {
-            apiKey: "DIN-API-NYCKEL",
-            authDomain: "DITT-PROJEKT.firebaseapp.com",
-            databaseURL: "https://DITT-PROJEKT-default-rtdb.firebaseio.com",
-            projectId: "DITT-PROJEKT",
-            storageBucket: "DITT-PROJEKT.appspot.com",
-            messagingSenderId: "DITT-ID",
-            appId: "DIN-APP-ID"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        */
-        
-        // Temporär lösning utan Firebase
-        const firebase = null;
-        const database = null;
-
-        let currentUser = null;
-        let currentGroup = null;
-        let sessionRef = null;
-        let notes = [];
-        let participants = {};
-        let actionItems = {};
+        // Speech recognition setup
+        let recognition = null;
+        let currentField = null;
         let isRecording = false;
-        let recognition;
-        let transcriptionText = '';
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('session-date').textContent = new Date().toLocaleDateString('sv-SE');
-            initSpeechRecognition();
-        });
-
-        // Initialize speech recognition
-        function initSpeechRecognition() {
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                recognition = new SpeechRecognition();
+        
+        // Check for browser support
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'sv-SE';
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            
+            recognition.onresult = function(event) {
+                let finalTranscript = '';
+                let interimTranscript = '';
                 
-                // Set Swedish language
-                recognition.lang = 'sv-SE';
-                recognition.continuous = true;
-                recognition.interimResults = true;
-                
-                recognition.onresult = function(event) {
-                    let finalTranscript = '';
-                    let interimTranscript = '';
-                    
-                    for (let i = event.resultIndex; i < event.results.length; i++) {
-                        const transcript = event.results[i][0].transcript;
-                        if (event.results[i].isFinal) {
-                            finalTranscript += transcript + ' ';
-                        } else {
-                            interimTranscript += transcript;
-                        }
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                    } else {
+                        interimTranscript += transcript;
                     }
-                    
+                }
+                
+                if (currentField) {
+                    const field = document.getElementById(currentField);
                     if (finalTranscript) {
-                        transcriptionText += finalTranscript;
-                        // Update input field with ongoing transcription
-                        document.getElementById('quick-note-input').value = transcriptionText + interimTranscript;
+                        field.value += finalTranscript;
                     }
-                };
-                
-                recognition.onerror = function(event) {
-                    console.error('Speech recognition error:', event.error);
-                    if (event.error === 'not-allowed') {
-                        alert('Mikrofontillgång nekad. Gör så här:\n\n1. Kontrollera att webbläsaren har mikrofontillgång\n2. Ladda om sidan\n3. Tillåt mikrofon när frågan kommer\n\nOBS: Filen måste laddas via HTTPS (inte file://)');
-                        isRecording = false;
-                        const voiceBtn = document.getElementById('voice-btn');
-                        const voiceBtnText = document.getElementById('voice-btn-text');
-                        voiceBtn.classList.remove('recording');
-                        voiceBtnText.textContent = 'Starta röstinspelning';
-                    } else if (event.error === 'no-speech') {
-                        // Continue listening
-                        if (isRecording) {
-                            try {
-                                recognition.start();
-                            } catch(e) {
-                                // Already started
-                            }
-                        }
-                    }
-                };
-                
-                recognition.onend = function() {
-                    if (isRecording) {
-                        // Restart if still recording
-                        recognition.start();
-                    }
-                };
-                
-                return true;
-            }
-            return false;
+                }
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                stopRecording();
+                showStatus('Fel vid inspelning. Försök igen.', 'error');
+            };
+            
+            recognition.onend = function() {
+                stopRecording();
+            };
         }
-
-        function generateGroupCode() {
-            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            const numbers = '0123456789';
-            let code = '';
-            for (let i = 0; i < 3; i++) {
-                code += letters.charAt(Math.floor(Math.random() * letters.length));
-            }
-            for (let i = 0; i < 3; i++) {
-                code += numbers.charAt(Math.floor(Math.random() * numbers.length));
-            }
-            return code;
-        }
-
-        function createNewSession() {
-            const userName = document.getElementById('user-name').value.trim();
-            if (!userName) {
-                alert('Ange ditt namn först!');
+        
+        // Recording functions
+        function startRecording(fieldId) {
+            if (!recognition) {
+                showStatus('Din enhet stöder inte röstinspelning', 'error');
                 return;
             }
-
-            const groupCode = generateGroupCode();
-            document.getElementById('group-code').value = groupCode;
-            joinSession();
-        }
-
-        function joinSession() {
-            const userName = document.getElementById('user-name').value.trim();
-            const groupCode = document.getElementById('group-code').value.trim().toUpperCase();
-
-            if (!userName || !groupCode) {
-                alert('Fyll i både namn och gruppkod!');
+            
+            if (isRecording) {
+                stopRecording();
                 return;
             }
-
-            currentUser = userName;
-            currentGroup = groupCode;
-
-            // Temporär lösning utan Firebase
-            if (!firebase) {
-                // Visa huvudinnehåll direkt
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-content').classList.add('active');
-                document.getElementById('group-code-display').textContent = 'Gruppkod: ' + groupCode + ' (Offline-läge)';
-                
-                // Visa offline-status
-                const status = document.getElementById('connection-status');
-                status.textContent = 'Offline-läge';
-                status.className = 'connection-status offline';
-                
-                // Ladda lokal data
-                loadLocalData();
-                return;
+            
+            currentField = fieldId;
+            isRecording = true;
+            
+            // Update button appearance
+            const button = event.currentTarget;
+            button.classList.add('recording');
+            const textSpan = document.getElementById(fieldId + '-btn-text');
+            if (textSpan) {
+                textSpan.textContent = 'Stoppa inspelning';
             }
-
-            // Firebase-kod (när aktiverad)
-            sessionRef = database.ref('sessions/' + groupCode);
-
-            // Set user as online
-            const userRef = sessionRef.child('participants/' + userName);
-            userRef.set({
-                name: userName,
-                joinedAt: firebase.database.ServerValue.TIMESTAMP,
-                online: true
-            });
-
-            // Set up disconnect handling
-            userRef.onDisconnect().update({ online: false });
-
-            // Listen for changes
-            setupRealtimeListeners();
-
-            // Show main content
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-content').classList.add('active');
-            document.getElementById('group-code-display').textContent = 'Gruppkod: ' + groupCode;
-
-            // Update connection status
-            const connectedRef = database.ref('.info/connected');
-            connectedRef.on('value', (snapshot) => {
-                const status = document.getElementById('connection-status');
-                if (snapshot.val() === true) {
-                    status.textContent = 'Online';
-                    status.className = 'connection-status online';
-                } else {
-                    status.textContent = 'Offline';
-                    status.className = 'connection-status offline';
-                }
-            });
-        }
-
-        function setupRealtimeListeners() {
-            // Listen for notes
-            sessionRef.child('notes').on('value', (snapshot) => {
-                notes = [];
-                snapshot.forEach((childSnapshot) => {
-                    notes.push({
-                        id: childSnapshot.key,
-                        ...childSnapshot.val()
-                    });
-                });
-                updateNotesList();
-                updateCounters();
-            });
-
-            // Listen for participants
-            sessionRef.child('participants').on('value', (snapshot) => {
-                participants = snapshot.val() || {};
-                updateParticipantsList();
-                updateCounters();
-            });
-
-            // Listen for action items
-            sessionRef.child('actionItems').on('value', (snapshot) => {
-                actionItems = snapshot.val() || {};
-                updateActionItemsList();
-                updateCounters();
-            });
-
-            // Listen for summary
-            sessionRef.child('summary').on('value', (snapshot) => {
-                const summary = snapshot.val();
-                if (summary && summary !== document.getElementById('summary-text').value) {
-                    document.getElementById('summary-text').value = summary;
-                }
-            });
-        }
-
-        function updateParticipantsList() {
-            const list = document.getElementById('participants-list');
-            const participantArray = Object.entries(participants);
             
-            list.innerHTML = participantArray.map(([name, data]) => `
-                <div class="participant-item">
-                    <span>${name}</span>
-                    <span class="participant-status" style="background-color: ${data.online ? '#28a745' : '#dc3545'}"></span>
-                </div>
-            `).join('');
+            recognition.start();
         }
-
-        function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            // Show selected tab
-            document.getElementById(tabName + '-tab').classList.add('active');
-            event.target.classList.add('active');
-        }
-
-        function updateCounters() {
-            // Update note counter
-            document.getElementById('note-count').textContent = notes.length + ' anteckningar';
+        
+        function stopRecording() {
+            if (!isRecording) return;
             
-            // Update action counter
-            const actionCount = Object.keys(actionItems).length;
-            document.getElementById('action-count').textContent = actionCount + ' åtgärdspunkter';
-
-            // Update participant counter
-            const onlineCount = Object.values(participants).filter(p => p.online).length;
-            document.getElementById('participant-count').textContent = onlineCount + ' deltagare online';
-        }
-
-        function addQuickNote() {
-            const input = document.getElementById('quick-note-input');
-            const noteText = input.value.trim();
-            
-            if (noteText) {
-                const note = {
-                    id: Date.now(),
-                    text: noteText,
-                    timestamp: new Date().toLocaleTimeString('sv-SE'),
-                    author: currentUser,
-                    type: 'text'
-                };
-                
-                // Om Firebase är aktiverat
-                if (sessionRef) {
-                    sessionRef.child('notes').push(note);
-                } else {
-                    // Lokal lagring
-                    notes.push(note);
-                    updateNotesList();
-                    updateCounters();
-                    saveLocalData();
-                }
-                
-                input.value = '';
-                
-                // Show feedback
-                input.style.borderColor = '#28a745';
-                setTimeout(() => {
-                    input.style.borderColor = '#e0e0e0';
-                }, 1000);
-            }
-        }
-
-        function clearQuickNote() {
-            document.getElementById('quick-note-input').value = '';
-        }
-
-        function toggleVoiceRecording() {
-            const voiceBtn = document.getElementById('voice-btn');
-            const voiceBtnText = document.getElementById('voice-btn-text');
-            
-            if (!isRecording) {
-                if (!recognition && !initSpeechRecognition()) {
-                    alert('Din webbläsare stödjer inte rösttranskribering. Prova Chrome, Edge eller Safari.');
-                    return;
-                }
-                
-                transcriptionText = '';
-                document.getElementById('quick-note-input').value = '';
-                
-                voiceBtn.classList.add('recording');
-                voiceBtnText.textContent = 'Stoppa inspelning';
-                isRecording = true;
-                
-                try {
-                    recognition.start();
-                } catch (e) {
-                    console.error('Could not start recognition:', e);
-                }
-            } else {
-                stopVoiceRecording();
-            }
-        }
-
-        function stopVoiceRecording() {
-            const voiceBtn = document.getElementById('voice-btn');
-            const voiceBtnText = document.getElementById('voice-btn-text');
-            
-            voiceBtn.classList.remove('recording');
-            voiceBtnText.textContent = 'Starta röstinspelning';
             isRecording = false;
-            
             if (recognition) {
                 recognition.stop();
             }
             
-            // Save the transcribed text as a note if there's content
-            if (transcriptionText.trim()) {
-                const note = {
-                    id: Date.now(),
-                    text: '🎙️ ' + transcriptionText.trim(),
-                    timestamp: new Date().toLocaleTimeString('sv-SE'),
-                    author: currentUser,
-                    type: 'voice'
-                };
-                
-                // Om Firebase är aktiverat
-                if (sessionRef) {
-                    sessionRef.child('notes').push(note);
-                } else {
-                    // Lokal lagring
-                    notes.push(note);
-                    updateNotesList();
-                    updateCounters();
-                    saveLocalData();
+            // Reset all recording buttons
+            document.querySelectorAll('.voice-button').forEach(btn => {
+                btn.classList.remove('recording');
+            });
+            
+            // Reset button texts
+            document.querySelectorAll('[id$="-btn-text"]').forEach(span => {
+                if (span.id.includes('mission')) {
+                    span.textContent = span.id.includes('1') ? 'Tala in ditt varför' : 'Tala in dina tankar';
+                } else if (span.id.includes('super')) {
+                    span.textContent = 'Tala in';
+                } else if (span.id.includes('history')) {
+                    span.textContent = 'Tala in din historia';
+                } else if (span.id.includes('future')) {
+                    span.textContent = 'Tala in din vision';
                 }
-                
-                // Clear the input field
-                document.getElementById('quick-note-input').value = '';
+            });
+        }
+        
+        // Tab navigation
+        function showTab(tabName, pillElement) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Update nav pills if clicked from top nav
+            if (pillElement) {
+                document.querySelectorAll('.nav-pill').forEach(pill => {
+                    pill.classList.remove('active');
+                });
+                pillElement.classList.add('active');
+            }
+            
+            // Update bottom nav
+            document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Map tab names to bottom nav items
+            const bottomNavMap = {
+                'overview': 0,
+                'mission': 1,
+                'superpower': 2,
+                'timeline': 3,
+                'program': 0 // Program maps to Start in bottom nav
+            };
+            
+            if (bottomNavMap[tabName] !== undefined) {
+                document.querySelectorAll('.bottom-nav-item')[bottomNavMap[tabName]].classList.add('active');
             }
         }
-
-        function updateNotesList() {
-            const notesList = document.getElementById('notes-list');
+        
+        // Quick text helpers
+        function addQuickText(fieldId, text) {
+            const field = document.getElementById(fieldId);
+            field.value = text + ' ';
+            field.focus();
+        }
+        
+        function clearField(fieldId) {
+            document.getElementById(fieldId).value = '';
+        }
+        
+        // Save functions
+        function saveMissionMobile() {
+            const mission1 = document.getElementById('mission1').value;
+            const mission2 = document.getElementById('mission2').value;
             
-            if (notes.length === 0) {
-                notesList.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">Inga anteckningar än</p>';
+            if (!mission1) {
+                showStatus('Vänligen fyll i ditt varför först', 'error');
                 return;
             }
             
-            notesList.innerHTML = notes.map(note => `
-                <div class="note-item">
-                    <div class="timestamp">${note.timestamp}</div>
-                    <div class="note-text">${note.text}</div>
-                    <div class="author">${note.author}</div>
-                </div>
-            `).reverse().join('');
-        }
-
-        function updateActionItemsList() {
-            const list = document.getElementById('action-items');
-            list.innerHTML = '';
-            
-            Object.entries(actionItems).forEach(([id, item]) => {
-                const li = document.createElement('li');
-                li.className = 'action-item';
-                li.innerHTML = `
-                    <input type="checkbox" id="${id}" ${item.completed ? 'checked' : ''} onchange="toggleActionItem('${id}')">
-                    <label for="${id}">${item.text}</label>
-                `;
-                list.appendChild(li);
-            });
-        }
-
-        function toggleActionItem(id) {
-            const checkbox = document.getElementById(id);
-            sessionRef.child('actionItems/' + id + '/completed').set(checkbox.checked);
-        }
-
-        function addActionItem() {
-            const actionText = prompt('Skriv in ny åtgärdspunkt:');
-            if (actionText) {
-                const newItem = {
-                    text: actionText,
-                    completed: false,
-                    author: currentUser
-                };
-                
-                if (sessionRef) {
-                    sessionRef.child('actionItems').push(newItem);
-                } else {
-                    // Lokal lagring
-                    const id = 'action' + Date.now();
-                    actionItems[id] = newItem;
-                    updateActionItemsList();
-                    updateCounters();
-                    saveLocalData();
-                }
-            }
-        }
-
-        // Lokala lagringsfunktioner
-        function saveLocalData() {
             const data = {
-                notes: notes,
-                actionItems: actionItems,
-                summary: document.getElementById('summary-text').value,
-                group: currentGroup,
-                user: currentUser
+                timestamp: new Date().toISOString(),
+                varfor: mission1,
+                boosta: mission2
             };
-            localStorage.setItem('walkTalkSession_' + currentGroup, JSON.stringify(data));
+            
+            saveToLocal('mission', data);
+            showStatus('Ditt varför har sparats! ✓', 'success');
+            
+            // Clear fields
+            document.getElementById('mission1').value = '';
+            document.getElementById('mission2').value = '';
         }
-
-        function loadLocalData() {
-            const stored = localStorage.getItem('walkTalkSession_' + currentGroup);
-            if (stored) {
-                const data = JSON.parse(stored);
-                notes = data.notes || [];
-                actionItems = data.actionItems || {};
-                document.getElementById('summary-text').value = data.summary || '';
-                updateNotesList();
-                updateActionItemsList();
-                updateCounters();
+        
+        function saveSuperpowerMobile() {
+            const super1 = document.getElementById('super1').value;
+            const super2 = document.getElementById('super2').value;
+            const super3 = document.getElementById('super3').value;
+            const super4 = document.getElementById('super4').value;
+            const statement = document.getElementById('superStatement').value;
+            
+            if (!statement) {
+                showStatus('Vänligen formulera din superkraft först', 'error');
+                return;
             }
             
-            // Visa bara aktuell användare i deltagarlistan
-            participants[currentUser] = { name: currentUser, online: true };
-            updateParticipantsList();
+            const data = {
+                timestamp: new Date().toISOString(),
+                energi: super1,
+                braPA: super2,
+                skillnad: super3,
+                garna: super4,
+                superkraft: statement
+            };
+            
+            saveToLocal('superpower', data);
+            showStatus('Din superkraft har sparats! ⚡', 'success');
+            
+            // Clear fields
+            document.getElementById('super1').value = '';
+            document.getElementById('super2').value = '';
+            document.getElementById('super3').value = '';
+            document.getElementById('super4').value = '';
+            document.getElementById('superStatement').value = '';
         }
-
-        function shareViaEmail() {
-            const summary = document.getElementById('summary-text').value;
-            const subject = `Walk&Talk Sammanfattning - ${new Date().toLocaleDateString('sv-SE')}`;
-            const body = encodeURIComponent(summary || 'Ingen sammanfattning tillgänglig.');
+        
+        function saveTimelineMobile() {
+            const startDate = document.getElementById('startDate').value;
+            const history = document.getElementById('history').value;
+            const future = document.getElementById('future').value;
             
-            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+            if (!startDate || !history) {
+                showStatus('Vänligen fyll i när du började och din historia', 'error');
+                return;
+            }
+            
+            const data = {
+                timestamp: new Date().toISOString(),
+                start: startDate,
+                historia: history,
+                framtid: future
+            };
+            
+            saveToLocal('timeline', data);
+            showStatus('Din historia har sparats! 🌟', 'success');
+            
+            // Clear fields
+            document.getElementById('startDate').value = '';
+            document.getElementById('history').value = '';
+            document.getElementById('future').value = '';
         }
-
-        function copyToClipboard() {
-            const summary = document.getElementById('summary-text').value;
-            const actionItemsText = Object.values(actionItems).map(item => `- ${item.text} ${item.completed ? '✓' : ''}`).join('\n');
-            
-            const fullText = `Walk&Talk Sammanfattning\n${new Date().toLocaleDateString('sv-SE')}\nGruppkod: ${currentGroup}\n\n${summary}\n\nÅtgärdspunkter:\n${actionItemsText}`;
-            
-            navigator.clipboard.writeText(fullText).then(() => {
-                alert('Sammanfattning kopierad!');
-            });
+        
+        // Local storage functions
+        function saveToLocal(type, data) {
+            let allData = JSON.parse(localStorage.getItem('itid_konferens_2025') || '{}');
+            if (!allData[type]) {
+                allData[type] = [];
+            }
+            allData[type].push(data);
+            localStorage.setItem('itid_konferens_2025', JSON.stringify(allData));
         }
-
-        function exportToExcel() {
-            // Create CSV content
-            let csvContent = "Walk&Talk Session Export\n";
-            csvContent += `Datum:,${new Date().toLocaleDateString('sv-SE')}\n`;
-            csvContent += `Gruppkod:,${currentGroup}\n\n`;
-            
-            csvContent += "Anteckningar\n";
-            csvContent += "Tid,Text,Författare\n";
-            notes.forEach(note => {
-                csvContent += `${note.timestamp},"${note.text.replace(/"/g, '""')}",${note.author}\n`;
-            });
-            
-            csvContent += "\nÅtgärdspunkter\n";
-            csvContent += "Åtgärd,Status,Ansvarig\n";
-            Object.values(actionItems).forEach(item => {
-                csvContent += `"${item.text.replace(/"/g, '""')}",${item.completed ? 'Klar' : 'Ej klar'},${item.author}\n`;
-            });
-            
-            csvContent += "\nSammanfattning\n";
-            csvContent += `"${document.getElementById('summary-text').value.replace(/"/g, '""')}"\n`;
-
-            // Create blob and download
-            const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `WalkTalk_${currentGroup}_${new Date().toISOString().split('T')[0]}.csv`;
-            link.click();
+        
+        function loadFromLocal() {
+            return JSON.parse(localStorage.getItem('itid_konferens_2025') || '{}');
         }
-
-        // Auto-save summary
-        document.getElementById('summary-text').addEventListener('input', function() {
-            if (sessionRef) {
-                sessionRef.child('summary').set(this.value);
+        
+        // Export functions
+        function exportData() {
+            const data = loadFromLocal();
+            const text = JSON.stringify(data, null, 2);
+            
+            // Create download
+            const blob = new Blob([text], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `itid_konferens_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showStatus('Data exporterad!', 'success');
+        }
+        
+        function shareData() {
+            const data = loadFromLocal();
+            let shareText = 'iTid Konferens 2025 - Mina reflektioner\n\n';
+            
+            if (data.mission && data.mission.length > 0) {
+                shareText += 'MITT VARFÖR:\n' + data.mission[data.mission.length - 1].varfor + '\n\n';
+            }
+            
+            if (data.superpower && data.superpower.length > 0) {
+                shareText += 'MIN SUPERKRAFT:\n' + data.superpower[data.superpower.length - 1].superkraft + '\n\n';
+            }
+            
+            if (data.timeline && data.timeline.length > 0) {
+                shareText += 'MIN VISION:\n' + data.timeline[data.timeline.length - 1].framtid + '\n\n';
+            }
+            
+            // Try to share or copy
+            if (navigator.share) {
+                navigator.share({
+                    title: 'iTid Konferens 2025',
+                    text: shareText
+                }).catch(err => console.log('Share cancelled'));
             } else {
-                saveLocalData();
+                navigator.clipboard.writeText(shareText);
+                showStatus('Kopierat till urklipp!', 'success');
+            }
+        }
+        
+        // Status message
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message ' + type;
+            
+            setTimeout(() => {
+                statusEl.className = 'status-message';
+            }, 3000);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved data
+            const savedData = loadFromLocal();
+            if (Object.keys(savedData).length > 0) {
+                console.log('Saved data found:', savedData);
             }
         });
     </script>

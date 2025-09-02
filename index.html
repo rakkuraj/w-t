@@ -627,13 +627,11 @@
             </div>
             
             <div class="card">
-                <h3>🎯 Dagens aktivitet</h3>
+                <h3>📅 Konferensöversikt</h3>
                 <div class="info-box">
-                    <strong>Nu kör vi:</strong> Identifiera din superkraft
-                    <br>
-                    <button class="button" style="margin-top: 10px; width: 100%;" onclick="showTab('superpower')">
-                        Starta övningen
-                    </button>
+                    <p><strong>När:</strong> Tredje helgen i september 2025</p>
+                    <p><strong>Tema:</strong> En framtid där vi bor</p>
+                    <p style="margin-top: 10px;">Förbered dig genom att fundera på vad iTids mission betyder för dig personligen.</p>
                 </div>
             </div>
             
@@ -1201,6 +1199,20 @@
                 statusEl.textContent = 'Inga svar sparade ännu.';
                 statusEl.style.color = '#666';
             }
+        }
+        
+        function exportForCopilot() {
+            const data = loadFromLocal();
+            let copilotText = 'ANALYS FÖR iTID KONFERENS 2025\n\n';
+            copilotText += 'Använd följande data för att:\n';
+            copilotText += '1. Identifiera gemensamma teman i varför-beskrivningar\n';
+            copilotText += '2. Kategorisera superkrafter efter typ\n';
+            copilotText += '3. Analysera framtidsvisioner\n\n';
+            copilotText += '---DATA---\n\n';
+            copilotText += JSON.stringify(data, null, 2);
+            
+            navigator.clipboard.writeText(copilotText);
+            showStatus('Data kopierad och klar för Copilot!', 'success');
         }
         
         function exportAsText() {

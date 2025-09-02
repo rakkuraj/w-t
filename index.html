@@ -23,53 +23,211 @@
         
         .mobile-header {
             background: white;
-            padding: 15px;
+            padding: 12px 15px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .hamburger {
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+            padding: 0;
+            z-index: 102;
+        }
+        
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: #333;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -6px);
         }
         
         .logo {
-            font-size: 2em;
+            font-size: 1.8em;
             color: #667eea;
             font-weight: bold;
             text-align: center;
+            flex: 1;
         }
         
-        .tagline {
-            text-align: center;
-            color: #666;
-            font-size: 0.9em;
-            margin-top: 5px;
+        .header-spacer {
+            width: 32px;
         }
         
-        .mobile-nav {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding: 15px;
-            background: rgba(255,255,255,0.9);
-            -webkit-overflow-scrolling: touch;
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 98;
         }
         
-        .nav-pill {
-            padding: 10px 20px;
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
             background: white;
-            border-radius: 25px;
-            white-space: nowrap;
-            border: 2px solid #e0e0e0;
-            color: #666;
-            font-weight: 500;
-            transition: all 0.3s;
-            cursor: pointer;
-            flex-shrink: 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
         }
         
-        .nav-pill.active {
-            background: #667eea;
+        .sidebar.show {
+            left: 0;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-color: #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.3em;
+        }
+        
+        .close-menu {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sidebar-tagline {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            color: #666;
+            font-style: italic;
+            font-size: 0.9em;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .sidebar-menu {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+        
+        .menu-item {
+            width: 100%;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.95em;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            transition: background 0.2s;
+            font-family: inherit;
+            min-height: 48px;
+        }
+        
+        .menu-item:active {
+            background: #f0f0f0;
+        }
+        
+        .menu-item.active {
+            background: #f0f8ff;
+            color: #667eea;
+            font-weight: 600;
+            border-left: 4px solid #667eea;
+            padding-left: 16px;
+        }
+        
+        .menu-icon {
+            font-size: 1.2em;
+            width: 30px;
+            text-align: center;
+        }
+        
+        .menu-divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 10px 20px;
+        }
+        
+        .sidebar-footer {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .progress-mini {
+            margin-top: 10px;
+        }
+        
+        .progress-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar-mini {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill-mini {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 1s ease;
         }
         
         .content-container {
@@ -380,17 +538,77 @@
 </head>
 <body>
     <div class="mobile-header">
+        <button class="hamburger" onclick="toggleMenu()" aria-label="Meny">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <div class="logo">iTid</div>
-        <div class="tagline">Stora Konferensen 2025</div>
+        <div class="header-spacer"></div>
     </div>
     
-    <div class="mobile-nav">
-        <div class="nav-pill active" onclick="showTab('overview', this)">Start</div>
-        <div class="nav-pill" onclick="showTab('mission', this)">Mitt Varför</div>
-        <div class="nav-pill" onclick="showTab('superpower', this)">Superkraft</div>
-        <div class="nav-pill" onclick="showTab('timeline', this)">Historia</div>
-        <div class="nav-pill" onclick="showTab('program', this)">Program</div>
-    </div>
+    <div class="sidebar-overlay" onclick="closeMenu()"></div>
+    
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>Konferens 2025</h2>
+            <button class="close-menu" onclick="closeMenu()" aria-label="Stäng meny">✕</button>
+        </div>
+        
+        <div class="sidebar-tagline">En framtid där vi bor</div>
+        
+        <div class="sidebar-menu">
+            <button class="menu-item active" onclick="navigateTo('overview')">
+                <span class="menu-icon">🏠</span>
+                <span>Start</span>
+            </button>
+            
+            <button class="menu-item" onclick="navigateTo('mission')">
+                <span class="menu-icon">🎯</span>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span>Mitt Varför - En framtid där vi bor</span>
+                    <span style="font-size: 0.85em; color: #666; margin-top: 2px;">Fredag</span>
+                </div>
+            </button>
+            
+            <button class="menu-item" onclick="navigateTo('timeline')">
+                <span class="menu-icon">📖</span>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span>Vår gemensamma historia</span>
+                    <span style="font-size: 0.85em; color: #666; margin-top: 2px;">Lördag förmiddag</span>
+                </div>
+            </button>
+            
+            <button class="menu-item" onclick="navigateTo('superpower')">
+                <span class="menu-icon">⚡</span>
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span>Min Superkraft</span>
+                    <span style="font-size: 0.85em; color: #666; margin-top: 2px;">Lördag eftermiddag</span>
+                </div>
+            </button>
+            
+            <div class="menu-divider"></div>
+            
+            <button class="menu-item" onclick="navigateTo('export')">
+                <span class="menu-icon">💾</span>
+                <span>Digital sammanställning</span>
+            </button>
+            
+            <button class="menu-item" onclick="navigateTo('help')">
+                <span class="menu-icon">❓</span>
+                <span>Hjälp</span>
+            </button>
+        </div>
+        
+        <div class="sidebar-footer">
+            <div class="progress-mini">
+                <div class="progress-label">Din progress</div>
+                <div class="progress-bar-mini">
+                    <div class="progress-fill-mini" id="sidebarProgress"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
     
     <div class="content-container">
         <!-- Status meddelande -->
@@ -749,40 +967,165 @@
             });
         }
         
-        // Tab navigation
-        function showTab(tabName, pillElement) {
-            // Hide all tabs
+        // Hamburger menu functions
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const hamburger = document.querySelector('.hamburger');
+            
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+            hamburger.classList.toggle('active');
+            
+            // Update progress bar in sidebar
+            updateSidebarProgress();
+        }
+        
+        function closeMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            const hamburger = document.querySelector('.hamburger');
+            
+            sidebar.classList.remove('show');
+            overlay.classList.remove('show');
+            hamburger.classList.remove('active');
+        }
+        
+        function navigateTo(tabName) {
+            // Close menu
+            closeMenu();
+            
+            // Update active menu item
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Show tab
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
-            // Show selected tab
             document.getElementById(tabName).classList.add('active');
             
-            // Update nav pills if clicked from top nav
-            if (pillElement) {
-                document.querySelectorAll('.nav-pill').forEach(pill => {
-                    pill.classList.remove('active');
-                });
-                pillElement.classList.add('active');
+            // Update bottom nav if exists
+            updateBottomNav(tabName);
+            
+            // Special handling for export tab
+            if (tabName === 'export') {
+                checkSavedData();
             }
-            
-            // Update bottom nav
-            document.querySelectorAll('.bottom-nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Map tab names to bottom nav items
+        }
+        
+        function updateBottomNav(tabName) {
             const bottomNavMap = {
                 'overview': 0,
                 'mission': 1,
                 'superpower': 2,
-                'timeline': 3,
-                'program': 0 // Program maps to Start in bottom nav
+                'timeline': 3
             };
             
+            document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
             if (bottomNavMap[tabName] !== undefined) {
-                document.querySelectorAll('.bottom-nav-item')[bottomNavMap[tabName]].classList.add('active');
+                const items = document.querySelectorAll('.bottom-nav-item');
+                if (items[bottomNavMap[tabName]]) {
+                    items[bottomNavMap[tabName]].classList.add('active');
+                }
+            }
+        }
+        
+        function updateSidebarProgress() {
+            const data = loadFromLocal();
+            let completed = 0;
+            const total = 3;
+            
+            if (data.mission && data.mission.length > 0) completed++;
+            if (data.superpower && data.superpower.length > 0) completed++;
+            if (data.timeline && data.timeline.length > 0) completed++;
+            
+            const percentage = Math.round((completed / total) * 100);
+            const progressBar = document.getElementById('sidebarProgress');
+            if (progressBar) {
+                progressBar.style.width = percentage + '%';
+            }
+        }
+        
+        function checkSavedData() {
+            const data = loadFromLocal();
+            const statusEl = document.getElementById('dataStatus');
+            
+            let count = 0;
+            if (data.mission) count += data.mission.length;
+            if (data.superpower) count += data.superpower.length;
+            if (data.timeline) count += data.timeline.length;
+            
+            if (count > 0) {
+                statusEl.textContent = `Du har ${count} sparade svar redo för export.`;
+                statusEl.style.color = '#155724';
+            } else {
+                statusEl.textContent = 'Inga svar sparade ännu.';
+                statusEl.style.color = '#666';
+            }
+        }
+        
+        function exportAsText() {
+            const data = loadFromLocal();
+            let textContent = 'iTID KONFERENS 2025 - MINA REFLEKTIONER\n';
+            textContent += '=' .repeat(50) + '\n\n';
+            
+            if (data.mission && data.mission.length > 0) {
+                textContent += 'MITT VARFÖR - EN FRAMTID DÄR VI BOR\n';
+                textContent += '-'.repeat(40) + '\n';
+                data.mission.forEach(m => {
+                    textContent += `Datum: ${new Date(m.timestamp).toLocaleString('sv-SE')}\n`;
+                    textContent += `Varför: ${m.varfor}\n`;
+                    if (m.boosta) textContent += `Boosta det orubbliga: ${m.boosta}\n`;
+                    textContent += '\n';
+                });
+            }
+            
+            if (data.superpower && data.superpower.length > 0) {
+                textContent += '\nMIN SUPERKRAFT\n';
+                textContent += '-'.repeat(40) + '\n';
+                data.superpower.forEach(s => {
+                    textContent += `Datum: ${new Date(s.timestamp).toLocaleString('sv-SE')}\n`;
+                    textContent += `Superkraft: ${s.superkraft}\n`;
+                    if (s.energi) textContent += `Energi: ${s.energi}\n`;
+                    if (s.braPA) textContent += `Bra på: ${s.braPA}\n`;
+                    textContent += '\n';
+                });
+            }
+            
+            if (data.timeline && data.timeline.length > 0) {
+                textContent += '\nMIN HISTORIA\n';
+                textContent += '-'.repeat(40) + '\n';
+                data.timeline.forEach(t => {
+                    textContent += `Datum: ${new Date(t.timestamp).toLocaleString('sv-SE')}\n`;
+                    textContent += `Började: ${t.start}\n`;
+                    textContent += `Historia: ${t.historia}\n`;
+                    if (t.framtid) textContent += `Framtidsvision: ${t.framtid}\n`;
+                    textContent += '\n';
+                });
+            }
+            
+            // Create download
+            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `itid_konferens_${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showStatus('Textfil nedladdad!', 'success');
+        }
+        
+        // Update the original tab function to work with new menu
+        function showTab(tabName, bottomNavClick) {
+            if (bottomNavClick) {
+                navigateTo(tabName);
             }
         }
         

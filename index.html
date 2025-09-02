@@ -859,6 +859,139 @@
                 </button>
             </div>
         </div>
+        
+        <!-- Hjälp -->
+        <div id="help" class="tab-content">
+            <div class="card">
+                <h2>Hjälp & Instruktioner</h2>
+                
+                <div class="info-box">
+                    <h3>🎤 Röstinspelning - Så här gör du</h3>
+                    <ol style="padding-left: 20px; margin-top: 10px;">
+                        <li><strong>Ge tillåtelse:</strong> Första gången ber webbläsaren om tillåtelse att använda mikrofonen - tryck "Tillåt"</li>
+                        <li><strong>Starta inspelning:</strong> Tryck på den lila mikrofonknappen</li>
+                        <li><strong>Tala tydligt:</strong> Knappen blir röd och pulserar när den spelar in</li>
+                        <li><strong>Stoppa:</strong> Tryck på knappen igen för att avsluta</li>
+                        <li><strong>Redigera:</strong> All text kan redigeras i textfältet efteråt</li>
+                    </ol>
+                </div>
+                
+                <div class="info-box">
+                    <h3>📱 Tips för iPhone</h3>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Använd Safari för bäst stöd</li>
+                        <li>Gå till Inställningar → Safari → Mikrofon om inspelning inte fungerar</li>
+                        <li>Stäng andra appar som använder mikrofonen</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <h3>📱 Tips för Android</h3>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Använd Chrome för bäst stöd</li>
+                        <li>Kontrollera mikrofonbehörighet i telefonens inställningar</li>
+                        <li>Om text inte visas - vänta 2-3 sekunder efter att du pratat</li>
+                    </ul>
+                </div>
+                
+                <div class="warning-box">
+                    <h3>⚠️ Vanliga problem & lösningar</h3>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li><strong>Ingen text visas:</strong> Prata tydligare och närmare telefonen</li>
+                        <li><strong>Fel språk:</strong> Appen är inställd på svenska - byt om telefonen är på annat språk</li>
+                        <li><strong>Inspelning avbryts:</strong> Håll telefonen aktiv, låt den inte gå i viloläge</li>
+                        <li><strong>Text försvinner:</strong> Tryck "Spara" innan du byter flik!</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <h3>💾 Spara & säkerhetskopiera</h3>
+                    <p style="margin-top: 10px;"><strong>VIKTIGT:</strong> Alla svar sparas endast lokalt på din telefon!</p>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Tryck alltid "Spara" efter varje övning</li>
+                        <li>Exportera regelbundet (Digital sammanställning)</li>
+                        <li>Rensa INTE webbläsardata innan konferensen är klar</li>
+                        <li>Ta skärmdump av viktiga texter som backup</li>
+                    </ul>
+                </div>
+                
+                <div class="info-box">
+                    <h3>🤝 Under konferensen</h3>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li><strong>Fredag:</strong> Fokus på "Mitt Varför" - förbered dig genom att lyssna på podden</li>
+                        <li><strong>Lördag fm:</strong> "Vår gemensamma historia" - reflektera över din tid på iTid</li>
+                        <li><strong>Lördag em:</strong> "Min Superkraft" - var redo att dela i smågrupper</li>
+                        <li><strong>Tips:</strong> Använd pausen mellan aktiviteter för att spara/exportera</li>
+                    </ul>
+                </div>
+                
+                <div class="reflection-card">
+                    <div class="reflection-question">Behöver du mer hjälp?</div>
+                    <p>Fråga konferensvärdar eller IT-support på plats. Vi finns här för att hjälpa dig!</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Export/Digital sammanställning -->
+        <div id="export" class="tab-content">
+            <div class="card">
+                <h2>Digital sammanställning</h2>
+                
+                <div class="info-box">
+                    <p id="dataStatus">Kontrollerar sparad data...</p>
+                </div>
+                
+                <div class="reflection-card" style="margin-top: 20px;">
+                    <div class="reflection-question">Funktioner i denna sektion:</div>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li><strong>Tydligare knappar för export</strong> - Stora, lättklickade knappar med ikoner</li>
+                        <li><strong>Separata sektioner</strong> - "Exportera mina svar" och "Dela med Copilot" är tydligt åtskilda</li>
+                        <li><strong>Blå gradient på Copilot-knapparna</strong> - Visar Microsoft-koppling</li>
+                        <li><strong>Detaljerade instruktioner</strong> - Steg-för-steg guide för Copilot-användning</li>
+                    </ul>
+                </div>
+                
+                <h3 style="margin-top: 20px;">Exportera mina svar</h3>
+                <button class="button" style="width: 100%;" onclick="exportData()">
+                    <span style="font-size: 1.2em;">💾</span> Ladda ner som JSON
+                </button>
+                
+                <button class="button secondary" style="width: 100%; margin-top: 10px;" onclick="exportAsText()">
+                    <span style="font-size: 1.2em;">📄</span> Ladda ner som textfil
+                </button>
+                
+                <h3 style="margin-top: 25px;">Dela med Copilot</h3>
+                <button class="button" style="width: 100%; background: linear-gradient(135deg, #0078d4 0%, #40e0d0 100%);" onclick="shareData()">
+                    <span style="font-size: 1.2em;">📤</span> Kopiera för delning
+                </button>
+                
+                <button class="button" style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, #0078d4 0%, #40e0d0 100%);" onclick="exportForCopilot()">
+                    <span style="font-size: 1.2em;">🤖</span> Förbered för Copilot-analys
+                </button>
+                
+                <div class="warning-box" style="margin-top: 20px;">
+                    <h3>📊 Använd med Microsoft Copilot</h3>
+                    <ol style="padding-left: 20px; margin-top: 10px;">
+                        <li>Tryck "Förbered för Copilot-analys"</li>
+                        <li>Texten kopieras automatiskt</li>
+                        <li>Öppna Excel eller Word</li>
+                        <li>Klistra in och använd Copilot för att:
+                            <ul style="margin-top: 5px;">
+                                <li>Identifiera gemensamma teman</li>
+                                <li>Skapa kompetenskarta</li>
+                                <li>Analysera framtidsvisioner</li>
+                                <li>Generera handlingsplaner</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                
+                <div class="info-box" style="margin-top: 20px;">
+                    <h3>💡 Tips</h3>
+                    <p>Exportera regelbundet under konferensen för att inte förlora data. All data sparas lokalt på din telefon tills du rensar webbläsardata.</p>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="bottom-nav">

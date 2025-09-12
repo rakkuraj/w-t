@@ -2,1449 +2,1345 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>iTid Konferensen 2025</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Komplett Interaktiv Utbildning - Dokumenthantering ISO/EN</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding-bottom: 80px;
-        }
-        
-        .mobile-header {
-            background: white;
-            padding: 12px 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .hamburger {
-            width: 32px;
-            height: 32px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 4px;
-            padding: 0;
-            z-index: 102;
-        }
-        
-        .hamburger span {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background: #333;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-        
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 6px);
-        }
-        
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -6px);
-        }
-        
-        .logo {
-            font-size: 1.8em;
-            color: #667eea;
-            font-weight: bold;
-            text-align: center;
-            flex: 1;
-        }
-        
-        .header-spacer {
-            width: 32px;
-        }
-        
-        .sidebar-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 98;
-        }
-        
-        .sidebar-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            width: 280px;
-            height: 100%;
-            background: white;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            transition: left 0.3s ease;
-            z-index: 99;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sidebar.show {
-            left: 0;
-        }
-        
-        .sidebar-header {
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
         
-        .sidebar-header h2 {
-            margin: 0;
-            font-size: 1.3em;
-        }
-        
-        .close-menu {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .sidebar-tagline {
-            padding: 10px 20px;
-            background: #f8f9fa;
-            color: #666;
-            font-style: italic;
-            font-size: 0.9em;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .sidebar-menu {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px 0;
-        }
-        
-        .menu-item {
-            width: 100%;
-            padding: 12px 20px;
-            background: none;
-            border: none;
-            text-align: left;
-            font-size: 0.95em;
-            color: #333;
-            cursor: pointer;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            transition: background 0.2s;
-            font-family: inherit;
-            min-height: 48px;
-        }
-        
-        .menu-item:active {
-            background: #f0f0f0;
-        }
-        
-        .menu-item.active {
-            background: #f0f8ff;
-            color: #667eea;
-            font-weight: 600;
-            border-left: 4px solid #667eea;
-            padding-left: 16px;
-        }
-        
-        .menu-icon {
-            font-size: 1.2em;
-            width: 30px;
-            text-align: center;
-        }
-        
-        .menu-divider {
-            height: 1px;
-            background: #e0e0e0;
-            margin: 10px 20px;
-        }
-        
-        .sidebar-footer {
-            padding: 20px;
-            background: #f8f9fa;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .progress-mini {
-            margin-top: 10px;
-        }
-        
-        .progress-label {
-            font-size: 0.85em;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .progress-bar-mini {
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        
-        .progress-fill-mini {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            width: 0%;
-            transition: width 1s ease;
-        }
-        
-        .content-container {
-            padding: 15px;
-            max-width: 600px;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
         }
         
-        .tab-content {
-            display: none;
-            animation: slideIn 0.3s ease;
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         
-        .tab-content.active {
+        .progress-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .progress-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .progress-stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .progress-track {
+            background: #e9ecef;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .module-nav {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .module-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        
+        .module-tab {
+            padding: 12px 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            color: #666;
+            text-align: center;
+            position: relative;
+        }
+        
+        .module-tab:hover {
+            background: #dee2e6;
+            transform: translateY(-2px);
+        }
+        
+        .module-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .module-tab.completed {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+        
+        .module-tab.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 2px;
+            right: 5px;
+            font-size: 0.8em;
+        }
+        
+        .learning-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            min-height: 600px;
+        }
+        
+        .module-header {
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .module-title {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .module-description {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .content-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: white;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .quiz-container {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .quiz-question {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .quiz-option {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .quiz-option.selected {
+            background: #e3f2fd;
+            border-color: #667eea;
+        }
+        
+        .quiz-option.correct {
+            background: #c8e6c9;
+            border-color: #4caf50;
+            pointer-events: none;
+        }
+        
+        .quiz-option.incorrect {
+            background: #ffcdd2;
+            border-color: #f44336;
+            pointer-events: none;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .feedback.show {
             display: block;
         }
         
-        @keyframes slideIn {
-            from { 
-                opacity: 0; 
-                transform: translateX(20px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateX(0); 
-            }
+        .feedback.success {
+            background: #c8e6c9;
+            color: #2e7d32;
         }
         
-        .card {
+        .feedback.error {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .interactive-demo {
             background: white;
+            border: 2px solid #dee2e6;
             border-radius: 15px;
             padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 20px 0;
         }
         
-        .card h2 {
+        .demo-title {
+            font-size: 1.2em;
+            font-weight: bold;
             color: #333;
             margin-bottom: 15px;
-            font-size: 1.3em;
         }
         
-        .card h3 {
-            color: #667eea;
-            margin: 15px 0 10px 0;
-            font-size: 1.1em;
+        .drag-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
         }
         
-        .voice-input-container {
+        .drag-source, .drag-target {
+            min-height: 200px;
             background: #f8f9fa;
-            border-radius: 15px;
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
             padding: 15px;
-            margin: 15px 0;
         }
         
-        .voice-button {
-            width: 100%;
-            padding: 20px;
+        .draggable {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border: none;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: move;
+            transition: all 0.3s ease;
+        }
+        
+        .draggable:hover {
+            transform: scale(1.05);
+        }
+        
+        .draggable.dragging {
+            opacity: 0.5;
+        }
+        
+        .drop-zone {
+            min-height: 50px;
+            background: #e9ecef;
+            border: 2px dashed #adb5bd;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .drop-zone.drag-over {
+            background: #c3f7c3;
+            border-color: #56ab2f;
+        }
+        
+        .drop-zone h4 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .process-map {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .process-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 15px;
-            font-size: 1.1em;
-            font-weight: bold;
+            padding: 20px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
         }
         
-        .voice-button:active {
-            transform: scale(0.95);
+        .process-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
-        .voice-button.recording {
+        .process-card.leadership {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .process-card.main {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            animation: pulse 1.5s infinite;
+            color: white;
         }
         
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
+        .process-card.support {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
         }
         
-        .mic-icon {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
+        .process-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
         
-        textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
+        .process-items {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .standard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .standard-card {
+            background: white;
+            border: 2px solid #dee2e6;
             border-radius: 10px;
-            font-size: 16px;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 120px;
-            transition: border-color 0.3s;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        textarea:focus {
+        .standard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .standard-card.selected {
+            border-color: #667eea;
+            background: #e3f2fd;
+        }
+        
+        .standard-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .standard-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .standard-desc {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .metadata-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .form-group input,
+        .form-group select {
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #667eea;
         }
         
-        .button-group {
+        .checklist {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist-item {
             display: flex;
+            align-items: center;
             gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .button {
-            flex: 1;
-            min-width: 140px;
-            padding: 15px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1em;
-            font-weight: 500;
+            padding: 10px;
+            border-bottom: 1px solid #f8f9fa;
             cursor: pointer;
-            transition: transform 0.3s;
         }
         
-        .button:active {
-            transform: scale(0.95);
+        .checklist-item:hover {
+            background: #f8f9fa;
         }
         
-        .button.secondary {
-            background: #f0f0f0;
-            color: #333;
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
         }
         
-        .button.success {
-            background: #4CAF50;
+        .checklist-item.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
         }
         
-        .reflection-card {
-            background: #f0f8ff;
-            border-left: 4px solid #667eea;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin: 5px;
         }
         
-        .reflection-question {
-            font-weight: 600;
-            color: #667eea;
-            margin-bottom: 10px;
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
         
-        .info-box {
-            background: #e8f4ff;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
         }
         
-        .warning-box {
-            background: #fff3cd;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
         }
         
-        .timeline-item {
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .action-buttons {
             display: flex;
-            align-items: flex-start;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .final-test {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .final-test h2 {
+            font-size: 2em;
             margin-bottom: 20px;
         }
         
-        .timeline-date {
-            background: #667eea;
-            color: white;
-            padding: 8px 15px;
+        .certificate {
+            background: white;
+            color: #333;
+            padding: 40px;
             border-radius: 20px;
-            margin-right: 15px;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-        
-        .timeline-content {
-            flex: 1;
-        }
-        
-        .transcription-box {
-            background: #f8f9fa;
-            border: 2px dashed #667eea;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            min-height: 100px;
-            position: relative;
-        }
-        
-        .transcription-text {
-            color: #666;
-            font-style: italic;
-        }
-        
-        .copy-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 0.9em;
-            cursor: pointer;
-        }
-        
-        .status-message {
-            padding: 10px;
-            border-radius: 10px;
-            margin: 10px 0;
+            margin: 20px auto;
+            max-width: 600px;
             text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             display: none;
         }
         
-        .status-message.success {
-            background: #d4edda;
-            color: #155724;
+        .certificate.show {
             display: block;
         }
         
-        .status-message.error {
-            background: #f8d7da;
-            color: #721c24;
-            display: block;
-        }
-        
-        .quick-response {
-            display: inline-block;
-            padding: 8px 15px;
-            background: #f0f0f0;
-            border-radius: 20px;
-            margin: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .quick-response:active {
-            background: #667eea;
-            color: white;
-        }
-        
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 10px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-around;
-            z-index: 100;
-        }
-        
-        .bottom-nav-item {
-            padding: 10px;
-            color: #666;
-            text-align: center;
-            font-size: 0.9em;
-            cursor: pointer;
-        }
-        
-        .bottom-nav-item.active {
+        .certificate h2 {
+            font-size: 2.5em;
             color: #667eea;
-            font-weight: 600;
+            margin-bottom: 20px;
         }
         
-        @media (max-width: 380px) {
-            .mobile-header {
-                padding: 10px;
-            }
-            
-            .logo {
-                font-size: 1.5em;
-            }
-            
-            .card {
-                padding: 15px;
-            }
-            
-            .button {
-                min-width: 100px;
-                font-size: 0.9em;
-            }
+        .certificate .name {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 20px 0;
         }
         
-        /* iOS specific styling */
-        @supports (-webkit-touch-callout: none) {
-            textarea {
-                font-size: 16px !important;
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .module-tabs {
+                grid-template-columns: 1fr;
+            }
+            
+            .drag-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .process-map {
+                grid-template-columns: 1fr;
+            }
+            
+            .standard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metadata-form {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <div class="mobile-header">
-        <button class="hamburger" onclick="toggleMenu()" aria-label="Meny">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="logo">iTid</div>
-        <div class="header-spacer"></div>
-    </div>
-    
-    <div class="sidebar-overlay" onclick="closeMenu()"></div>
-    
-    <nav class="sidebar">
-        <div class="sidebar-header">
-            <h2>Konferens 2025</h2>
-            <button class="close-menu" onclick="closeMenu()" aria-label="Stäng meny">✕</button>
-        </div>
+    <div class="container">
+        <h1>🎓 Interaktiv Utbildning - Dokumenthantering ISO/EN</h1>
         
-        <div class="sidebar-tagline">En framtid där vi bor</div>
-        
-        <div class="sidebar-menu">
-            <button class="menu-item active" onclick="navigateTo('overview')">
-                <span class="menu-icon">🏠</span>
-                <span>Start</span>
-            </button>
-            
-            <button class="menu-item" onclick="navigateTo('mission')">
-                <span class="menu-icon">🎯</span>
-                <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                    <span>Mitt Varför - En framtid där vi bor</span>
-                    <span style="font-size: 0.85em; color: #666; margin-top: 2px;">Fredag</span>
-                </div>
-            </button>
-            
-            <button class="menu-item" onclick="navigateTo('timeline')">
-                <span class="menu-icon">📖</span>
-                <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                    <span>Vår gemensamma historia</span>
-                    <span style="font-size: 0.85em; color: #666; margin-top: 2px;">Lördag förmiddag</span>
-                </div>
-            </button>
-            
-            <button class="menu-item" onclick="navigateTo('superpower')">
-                <span class="menu-icon">⚡</span>
-                <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                    <span>Min Superkraft</span>
-                    <span style="font-size: 0.85em; color: #666; margin-top: 2px;">Lördag eftermiddag</span>
-                </div>
-            </button>
-            
-            <div class="menu-divider"></div>
-            
-            <button class="menu-item" onclick="navigateTo('export')">
-                <span class="menu-icon">💾</span>
-                <span>Digital sammanställning</span>
-            </button>
-            
-            <button class="menu-item" onclick="navigateTo('help')">
-                <span class="menu-icon">❓</span>
-                <span>Hjälp</span>
-            </button>
-        </div>
-        
-        <div class="sidebar-footer">
-            <div class="progress-mini">
-                <div class="progress-label">Din progress</div>
-                <div class="progress-bar-mini">
-                    <div class="progress-fill-mini" id="sidebarProgress"></div>
-                </div>
-            </div>
-        </div>
-    </nav>
-    
-    <div class="content-container">
-        <!-- Status meddelande -->
-        <div id="statusMessage" class="status-message"></div>
-        
-        <!-- Start/Översikt -->
-        <div id="overview" class="tab-content active">
-            <div class="card">
-                <h2>Välkommen! 👋</h2>
-                <p>Använd denna app för att delta i konferensens aktiviteter. Du kan:</p>
-                <ul style="margin: 15px 0; padding-left: 20px;">
-                    <li>Tala in dina reflektioner</li>
-                    <li>Skriva direkt i appen</li>
-                    <li>Spara och dela dina tankar</li>
-                </ul>
-            </div>
-            
-            <div class="card">
-                <h3>📅 Konferensöversikt</h3>
-                <div class="info-box">
-                    <p><strong>När:</strong> Tredje helgen i september 2025</p>
-                    <p><strong>Tema:</strong> En framtid där vi bor</p>
-                    <p style="margin-top: 10px;">Förbered dig genom att fundera på vad iTids mission betyder för dig personligen.</p>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>📱 Tips för mobilanvändning</h3>
-                <ul style="padding-left: 20px;">
-                    <li>Tryck på mikrofonen för att tala in</li>
-                    <li>Transkriberingen visas automatiskt</li>
-                    <li>Du kan redigera texten efteråt</li>
-                    <li>Alla svar sparas lokalt på din telefon</li>
-                </ul>
-            </div>
-        </div>
-        
-        <!-- Mitt Varför -->
-        <div id="mission" class="tab-content">
-            <div class="card">
-                <h2>Mitt Varför</h2>
-                <p style="margin-bottom: 15px;">Vad betyder "En framtid där vi bor" för dig?</p>
-                
-                <div class="reflection-card">
-                    <div class="reflection-question">Reflektera över:</div>
-                    <div class="quick-response" onclick="addQuickText('mission1', 'Jag vill bidra till')">Jag vill bidra till...</div>
-                    <div class="quick-response" onclick="addQuickText('mission1', 'För mig betyder det')">För mig betyder det...</div>
-                    <div class="quick-response" onclick="addQuickText('mission1', 'Mitt hjärta ligger i')">Mitt hjärta ligger i...</div>
-                </div>
-                
-                <div class="voice-input-container">
-                    <button class="voice-button" onclick="startRecording('mission1')">
-                        <svg class="mic-icon" viewBox="0 0 24 24">
-                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                        </svg>
-                        <span id="mission1-btn-text">Tala in ditt varför</span>
-                    </button>
-                </div>
-                
-                <textarea id="mission1" placeholder="Ditt varför kommer att visas här..."></textarea>
-                
-                <div class="button-group">
-                    <button class="button success" onclick="saveMissionMobile()">Spara</button>
-                    <button class="button secondary" onclick="clearField('mission1')">Rensa</button>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>Vad behövs för att boosta det orubbliga?</h3>
-                
-                <div class="voice-input-container">
-                    <button class="voice-button" onclick="startRecording('mission2')">
-                        <svg class="mic-icon" viewBox="0 0 24 24">
-                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                        </svg>
-                        <span id="mission2-btn-text">Tala in dina tankar</span>
-                    </button>
-                </div>
-                
-                <textarea id="mission2" placeholder="Vad behöver vi för att lyckas?"></textarea>
-            </div>
-        </div>
-        
-        <!-- Superkraft -->
-        <div id="superpower" class="tab-content">
-            <div class="card">
-                <h2>Din Superkraft</h2>
-                
-                <div class="info-box">
-                    <strong>Vad är en superkraft?</strong><br>
-                    Det du älskar, är bra på, och som skapar värde för andra.
-                </div>
-                
-                <div class="reflection-card">
-                    <div class="reflection-question">1. Vad ger dig energi?</div>
-                    <button class="voice-button" onclick="startRecording('super1')">
-                        <svg class="mic-icon" viewBox="0 0 24 24">
-                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                        </svg>
-                        <span id="super1-btn-text">Tala in</span>
-                    </button>
-                    <textarea id="super1" placeholder="När känner du flow?"></textarea>
-                </div>
-                
-                <div class="reflection-card">
-                    <div class="reflection-question">2. Vad är du bra på?</div>
-                    <button class="voice-button" onclick="startRecording('super2')">
-                        <svg class="mic-icon" viewBox="0 0 24 24">
-                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                        </svg>
-                        <span id="super2-btn-text">Tala in</span>
-                    </button>
-                    <textarea id="super2" placeholder="Vad ber andra dig om hjälp med?"></textarea>
-                </div>
-                
-                <div class="reflection-card">
-                    <div class="reflection-question">3. När gör du skillnad?</div>
-                    <button class="voice-button" onclick="startRecording('super3')">
-                        <svg class="mic-icon" viewBox="0 0 24 24">
-                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                        </svg>
-                        <span id="super3-btn-text">Tala in</span>
-                    </button>
-                    <textarea id="super3" placeholder="Vad känns meningsfullt?"></textarea>
-                </div>
-                
-                <div class="reflection-card">
-                    <div class="reflection-question">4. Vad gör du gärna?</div>
-                    <button class="voice-button" onclick="startRecording('super4')">
-                        <svg class="mic-icon" viewBox="0 0 24 24">
-                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                        </svg>
-                        <span id="super4-btn-text">Tala in</span>
-                    </button>
-                    <textarea id="super4" placeholder="Även om du inte måste?"></textarea>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>Formulera din superkraft</h3>
-                <div class="quick-response" onclick="addQuickText('superStatement', 'Min superkraft är att')">Min superkraft är att...</div>
-                <div class="quick-response" onclick="addQuickText('superStatement', 'Jag hjälper andra genom att')">Jag hjälper andra genom att...</div>
-                
-                <textarea id="superStatement" placeholder="Skriv din superkraft i en mening..."></textarea>
-                
-                <button class="button success" style="width: 100%; margin-top: 15px;" onclick="saveSuperpowerMobile()">
-                    Spara min superkraft
-                </button>
-            </div>
-        </div>
-        
-        <!-- Historia -->
-        <div id="timeline" class="tab-content">
-            <div class="card">
-                <h2>Din iTid-historia</h2>
-                
-                <div class="reflection-card">
-                    <div class="reflection-question">När började du?</div>
-                    <input type="text" id="startDate" placeholder="T.ex. Januari 2020" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px;">
-                </div>
-                
-                <div class="reflection-card">
-                    <div class="reflection-question">Hur har iTid utvecklats under din tid?</div>
-                    <button class="voice-button" onclick="startRecording('history')">
-                        <svg class="mic-icon" viewBox="0 0 24 24">
-                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                        </svg>
-                        <span id="history-btn-text">Tala in din historia</span>
-                    </button>
-                    <textarea id="history" placeholder="Vilka händelser har påverkat?"></textarea>
-                </div>
-                
-                <div class="reflection-card">
-                    <div class="reflection-question">Vad ser du framåt?</div>
-                    <button class="voice-button" onclick="startRecording('future')">
-                        <svg class="mic-icon" viewBox="0 0 24 24">
-                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                        </svg>
-                        <span id="future-btn-text">Tala in din vision</span>
-                    </button>
-                    <textarea id="future" placeholder="Vad vill du se hända?"></textarea>
-                </div>
-                
-                <button class="button success" style="width: 100%;" onclick="saveTimelineMobile()">
-                    Spara min historia
-                </button>
-            </div>
-        </div>
-        
-        <!-- Program -->
-        <div id="program" class="tab-content">
-            <div class="card">
-                <h2>Program</h2>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">Fredag</div>
-                    <div class="timeline-content">
-                        <strong>14:30-17:30</strong><br>
-                        Konferensstart<br>
-                        • En framtid där vi bor<br>
-                        • Mitt varför
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-header">
+                <div class="progress-title">Din progress</div>
+                <div class="progress-stats">
+                    <div class="stat">
+                        <span>🏆</span>
+                        <span id="totalPoints">0</span> poäng
                     </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">Lördag</div>
-                    <div class="timeline-content">
-                        <strong>08:30-12:00</strong><br>
-                        Vår gemensamma historia<br><br>
-                        <strong>13:30-16:00</strong><br>
-                        Superkrafter
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">Söndag</div>
-                    <div class="timeline-content">
-                        Social dag<br>
-                        Roliga aktiviteter
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">Måndag</div>
-                    <div class="timeline-content">
-                        Resdag hem
+                    <div class="stat">
+                        <span>✅</span>
+                        <span id="completedModules">0</span>/7 moduler
                     </div>
                 </div>
             </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+        </div>
+        
+        <!-- Module Navigation -->
+        <div class="module-nav">
+            <h2 style="color: #333; margin-bottom: 20px;">📚 Välj modul</h2>
+            <div class="module-tabs">
+                <div class="module-tab active" onclick="showModule(1)">1. Grunderna</div>
+                <div class="module-tab" onclick="showModule(2)">2. Processer</div>
+                <div class="module-tab" onclick="showModule(3)">3. Standarder</div>
+                <div class="module-tab" onclick="showModule(4)">4. Metadata</div>
+                <div class="module-tab" onclick="showModule(5)">5. SharePoint</div>
+                <div class="module-tab" onclick="showModule(6)">6. Sökning</div>
+                <div class="module-tab" onclick="showModule(7)">7. Sluttest</div>
+            </div>
+        </div>
+        
+        <!-- Learning Content -->
+        <div class="learning-content">
             
-            <div class="card">
-                <h3>📱 Digital sammanställning</h3>
-                <button class="button" style="width: 100%;" onclick="exportData()">
-                    Exportera mina svar
-                </button>
-                <button class="button secondary" style="width: 100%; margin-top: 10px;" onclick="shareData()">
-                    Dela med Copilot
-                </button>
-            </div>
-        </div>
-        
-        <!-- Hjälp -->
-        <div id="help" class="tab-content">
-            <div class="card">
-                <h2>Hjälp & Instruktioner</h2>
-                
-                <div class="info-box">
-                    <h3>🎤 Röstinspelning - Så här gör du</h3>
-                    <ol style="padding-left: 20px; margin-top: 10px;">
-                        <li><strong>Ge tillåtelse:</strong> Första gången ber webbläsaren om tillåtelse att använda mikrofonen - tryck "Tillåt"</li>
-                        <li><strong>Starta inspelning:</strong> Tryck på den lila mikrofonknappen</li>
-                        <li><strong>Tala tydligt:</strong> Knappen blir röd och pulserar när den spelar in</li>
-                        <li><strong>Stoppa:</strong> Tryck på knappen igen för att avsluta</li>
-                        <li><strong>Redigera:</strong> All text kan redigeras i textfältet efteråt</li>
-                    </ol>
+            <!-- Module 1: Grunderna -->
+            <div id="module1" class="module-content">
+                <div class="module-header">
+                    <h2 class="module-title">Modul 1: Grunderna i processbaserad dokumenthantering</h2>
+                    <p class="module-description">Förstå varför vi använder processbaserad struktur och dess fördelar.</p>
                 </div>
                 
-                <div class="info-box">
-                    <h3>📱 Tips för iPhone</h3>
-                    <ul style="padding-left: 20px; margin-top: 10px;">
-                        <li>Använd Safari för bäst stöd</li>
-                        <li>Gå till Inställningar → Safari → Mikrofon om inspelning inte fungerar</li>
-                        <li>Stäng andra appar som använder mikrofonen</li>
-                    </ul>
+                <div class="content-section">
+                    <div class="section-title">📖 Vad är processbaserad dokumenthantering?</div>
+                    <p>Processbaserad dokumenthantering innebär att vi organiserar dokument efter <strong>hur de används i verksamheten</strong>, inte efter vem som äger dem eller vilken avdelning de tillhör.</p>
+                    
+                    <div class="info-box">
+                        <strong>Tre huvudkategorier:</strong><br>
+                        🏛️ <strong>Ledningsprocesser</strong> - Styr och planerar verksamheten<br>
+                        ⚙️ <strong>Huvudprocesser</strong> - Skapar värde för kunden<br>
+                        🛠️ <strong>Stödprocesser</strong> - Stödjer de andra processerna
+                    </div>
                 </div>
                 
-                <div class="info-box">
-                    <h3>📱 Tips för Android</h3>
-                    <ul style="padding-left: 20px; margin-top: 10px;">
-                        <li>Använd Chrome för bäst stöd</li>
-                        <li>Kontrollera mikrofonbehörighet i telefonens inställningar</li>
-                        <li>Om text inte visas - vänta 2-3 sekunder efter att du pratat</li>
-                    </ul>
+                <div class="quiz-container">
+                    <div class="quiz-question">Quiz 1: Vilket dokument hör till en huvudprocess?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q1', false)">Verksamhetsplan</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q1', true)">Offertmall</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q1', false)">Fakturarutin</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q1', false)">IT-policy</div>
+                    </div>
+                    <div class="feedback" id="q1-feedback"></div>
                 </div>
                 
-                <div class="warning-box">
-                    <h3>⚠️ Vanliga problem & lösningar</h3>
-                    <ul style="padding-left: 20px; margin-top: 10px;">
-                        <li><strong>Ingen text visas:</strong> Prata tydligare och närmare telefonen</li>
-                        <li><strong>Fel språk:</strong> Appen är inställd på svenska - byt om telefonen är på annat språk</li>
-                        <li><strong>Inspelning avbryts:</strong> Håll telefonen aktiv, låt den inte gå i viloläge</li>
-                        <li><strong>Text försvinner:</strong> Tryck "Spara" innan du byter flik!</li>
-                    </ul>
+                <div class="interactive-demo">
+                    <div class="demo-title">Övning: Sortera dokument i rätt kategori</div>
+                    <div class="drag-area">
+                        <div class="drag-source">
+                            <h4>Dokument att sortera:</h4>
+                            <div class="draggable" draggable="true" data-category="ledning">Strategisk plan</div>
+                            <div class="draggable" draggable="true" data-category="huvud">Produktionsorder</div>
+                            <div class="draggable" draggable="true" data-category="stod">Lönerutin</div>
+                            <div class="draggable" draggable="true" data-category="huvud">Kvalitetskontroll</div>
+                        </div>
+                        <div class="drag-target">
+                            <div class="drop-zone" data-accept="ledning">
+                                <h4>🏛️ Ledningsprocesser</h4>
+                            </div>
+                            <div class="drop-zone" data-accept="huvud">
+                                <h4>⚙️ Huvudprocesser</h4>
+                            </div>
+                            <div class="drop-zone" data-accept="stod">
+                                <h4>🛠️ Stödprocesser</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="checkDragDrop()">Kontrollera</button>
+                    <div class="feedback" id="drag-feedback"></div>
                 </div>
                 
-                <div class="info-box">
-                    <h3>💾 Spara & säkerhetskopiera</h3>
-                    <p style="margin-top: 10px;"><strong>VIKTIGT:</strong> Alla svar sparas endast lokalt på din telefon!</p>
-                    <ul style="padding-left: 20px; margin-top: 10px;">
-                        <li>Tryck alltid "Spara" efter varje övning</li>
-                        <li>Exportera regelbundet (Digital sammanställning)</li>
-                        <li>Rensa INTE webbläsardata innan konferensen är klar</li>
-                        <li>Ta skärmdump av viktiga texter som backup</li>
-                    </ul>
-                </div>
-                
-                <div class="info-box">
-                    <h3>🤝 Under konferensen</h3>
-                    <ul style="padding-left: 20px; margin-top: 10px;">
-                        <li><strong>Fredag:</strong> Fokus på "Mitt Varför" - förbered dig genom att lyssna på podden</li>
-                        <li><strong>Lördag fm:</strong> "Vår gemensamma historia" - reflektera över din tid på iTid</li>
-                        <li><strong>Lördag em:</strong> "Min Superkraft" - var redo att dela i smågrupper</li>
-                        <li><strong>Tips:</strong> Använd pausen mellan aktiviteter för att spara/exportera</li>
-                    </ul>
-                </div>
-                
-                <div class="reflection-card">
-                    <div class="reflection-question">Behöver du mer hjälp?</div>
-                    <p>Fråga konferensvärdar eller IT-support på plats. Vi finns här för att hjälpa dig!</p>
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" disabled>← Föregående</button>
+                    <button class="btn btn-success" onclick="completeModule(1)">Slutför modul →</button>
                 </div>
             </div>
-        </div>
-        
-        <!-- Export/Digital sammanställning -->
-        <div id="export" class="tab-content">
-            <div class="card">
-                <h2>Digital sammanställning</h2>
-                
-                <div class="info-box">
-                    <p id="dataStatus">Kontrollerar sparad data...</p>
+            
+            <!-- Module 2: Processer -->
+            <div id="module2" class="module-content hidden">
+                <div class="module-header">
+                    <h2 class="module-title">Modul 2: Processstrukturen i detalj</h2>
+                    <p class="module-description">Lär känna alla processer och deras delprocesser.</p>
                 </div>
                 
-                <div class="reflection-card" style="margin-top: 20px;">
-                    <div class="reflection-question">Funktioner i denna sektion:</div>
-                    <ul style="padding-left: 20px; margin-top: 10px;">
-                        <li><strong>Tydligare knappar för export</strong> - Stora, lättklickade knappar med ikoner</li>
-                        <li><strong>Separata sektioner</strong> - "Exportera mina svar" och "Dela med Copilot" är tydligt åtskilda</li>
-                        <li><strong>Blå gradient på Copilot-knapparna</strong> - Visar Microsoft-koppling</li>
-                        <li><strong>Detaljerade instruktioner</strong> - Steg-för-steg guide för Copilot-användning</li>
+                <div class="content-section">
+                    <div class="section-title">🗺️ Processkartan</div>
+                    <div class="process-map">
+                        <div class="process-card leadership" onclick="showProcessDetails('leadership')">
+                            <div class="process-title">1. Ledningsprocesser</div>
+                            <div class="process-items">
+                                1.1 Strategisk planering<br>
+                                1.2 Verksamhetsstyrning<br>
+                                1.3 Ledningens genomgång<br>
+                                1.4 Förbättringsarbete
+                            </div>
+                        </div>
+                        <div class="process-card main" onclick="showProcessDetails('main')">
+                            <div class="process-title">2. Huvudprocesser</div>
+                            <div class="process-items">
+                                2.1 Försäljning<br>
+                                2.2 Produktion<br>
+                                2.3 Kvalitetskontroll<br>
+                                2.4 Leverans
+                            </div>
+                        </div>
+                        <div class="process-card support" onclick="showProcessDetails('support')">
+                            <div class="process-title">3. Stödprocesser</div>
+                            <div class="process-items">
+                                3.1 Ekonomi<br>
+                                3.2 HR<br>
+                                3.3 IT<br>
+                                3.4 Inköp
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">Quiz 2: En WPS (svetsanvisning) tillhör vilken process?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q2', false)">1.3 Ledningens genomgång</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q2', true)">2.2 Produktion</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q2', false)">3.1 Ekonomi</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q2', false)">3.4 Inköp</div>
+                    </div>
+                    <div class="feedback" id="q2-feedback"></div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">👤 Processägarens roll</div>
+                    <div class="info-box">
+                        <strong>Processägaren ansvarar för:</strong><br>
+                        • Att processen fungerar effektivt<br>
+                        • Dokumentation är uppdaterad<br>
+                        • Förbättringar genomförs<br>
+                        • Utbildning av medarbetare<br>
+                        • Rapportering till ledningen
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="showModule(1)">← Föregående</button>
+                    <button class="btn btn-success" onclick="completeModule(2)">Slutför modul →</button>
+                </div>
+            </div>
+            
+            <!-- Module 3: Standarder -->
+            <div id="module3" class="module-content hidden">
+                <div class="module-header">
+                    <h2 class="module-title">Modul 3: ISO/EN-standarder</h2>
+                    <p class="module-description">Förstå hur olika standarder integreras i samma system.</p>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">📋 Våra standarder</div>
+                    <div class="standard-grid">
+                        <div class="standard-card" onclick="selectStandard(this)">
+                            <div class="standard-icon">🎯</div>
+                            <div class="standard-name">ISO 9001</div>
+                            <div class="standard-desc">Kvalitetsledning - fokus på kundnöjdhet och ständig förbättring</div>
+                        </div>
+                        <div class="standard-card" onclick="selectStandard(this)">
+                            <div class="standard-icon">🌱</div>
+                            <div class="standard-name">ISO 14001</div>
+                            <div class="standard-desc">Miljöledning - minska miljöpåverkan och följa miljölagar</div>
+                        </div>
+                        <div class="standard-card" onclick="selectStandard(this)">
+                            <div class="standard-icon">⚡</div>
+                            <div class="standard-name">ISO 3834</div>
+                            <div class="standard-desc">Svetskvalitet - krav för svetsning av metalliska material</div>
+                        </div>
+                        <div class="standard-card" onclick="selectStandard(this)">
+                            <div class="standard-icon">🏗️</div>
+                            <div class="standard-name">EN 1090</div>
+                            <div class="standard-desc">Stålkonstruktioner - CE-märkning av bärande konstruktioner</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">Quiz 3: Vilka standarder omfattar en WPS (svetsanvisning)?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q3', false)">Bara ISO 9001</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q3', false)">ISO 9001 och ISO 14001</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q3', true)">ISO 9001, ISO 3834 och EN 1090</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q3', false)">Alla fyra standarder</div>
+                    </div>
+                    <div class="feedback" id="q3-feedback"></div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">🔄 Integrerat ledningssystem</div>
+                    <div class="info-box">
+                        <strong>Fördelar med integration:</strong><br>
+                        ✅ Ett dokument kan uppfylla flera standarder<br>
+                        ✅ Undvik dubbelarbete och dubbeldokumentation<br>
+                        ✅ Enklare revisioner - filtrera per standard<br>
+                        ✅ Bättre översikt över alla krav<br>
+                        ✅ Effektivare underhåll
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="showModule(2)">← Föregående</button>
+                    <button class="btn btn-success" onclick="completeModule(3)">Slutför modul →</button>
+                </div>
+            </div>
+            
+            <!-- Module 4: Metadata -->
+            <div id="module4" class="module-content hidden">
+                <div class="module-header">
+                    <h2 class="module-title">Modul 4: Metadata och taggning</h2>
+                    <p class="module-description">Lär dig tagga dokument rätt för sökbarhet och spårbarhet.</p>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">🏷️ Metadata-fält</div>
+                    <div class="metadata-form">
+                        <div class="form-group">
+                            <label>Process:</label>
+                            <select id="process-select">
+                                <option>Välj process...</option>
+                                <option>1.1 Strategisk planering</option>
+                                <option>2.2 Produktion</option>
+                                <option>3.1 Ekonomi</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Dokumenttyp:</label>
+                            <select id="doctype-select">
+                                <option>Välj typ...</option>
+                                <option>Rutin</option>
+                                <option>Instruktion</option>
+                                <option>Mall</option>
+                                <option>Blankett</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status:</label>
+                            <select id="status-select">
+                                <option>Välj status...</option>
+                                <option>Utkast</option>
+                                <option>Gällande</option>
+                                <option>Under revidering</option>
+                                <option>Utgått</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Standarder:</label>
+                            <select id="standards-select" multiple style="height: 100px;">
+                                <option>ISO 9001</option>
+                                <option>ISO 14001</option>
+                                <option>ISO 3834</option>
+                                <option>EN 1090</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="validateMetadata()">Validera metadata</button>
+                    <div class="feedback" id="metadata-feedback"></div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">📝 Namnstandard</div>
+                    <div class="info-box">
+                        <strong>Format:</strong> [Process]-[Typ]-[Beskrivning]-[Version]<br><br>
+                        <strong>Exempel:</strong><br>
+                        2.2-IN-Svetsning-rostfritt-v1.0.pdf<br>
+                        1.1-RU-Strategisk-planering-v2.0.docx<br><br>
+                        <strong>Förkortningar:</strong><br>
+                        RU = Rutin, IN = Instruktion, MA = Mall, BL = Blankett
+                    </div>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">Quiz 4: Vilket filnamn följer standarden?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q4', false)">Svetsrutin_ny.pdf</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q4', true)">2.2-IN-WPS-135-v1.0.pdf</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q4', false)">WPS version 2.docx</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q4', false)">Instruktion svetsning.pdf</div>
+                    </div>
+                    <div class="feedback" id="q4-feedback"></div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="showModule(3)">← Föregående</button>
+                    <button class="btn btn-success" onclick="completeModule(4)">Slutför modul →</button>
+                </div>
+            </div>
+            
+            <!-- Module 5: SharePoint -->
+            <div id="module5" class="module-content hidden">
+                <div class="module-header">
+                    <h2 class="module-title">Modul 5: SharePoint i praktiken</h2>
+                    <p class="module-description">Navigera, ladda upp och hantera dokument i SharePoint.</p>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">📁 Biblioteksstruktur</div>
+                    <div class="info-box">
+                        <strong>Rekommenderad struktur:</strong><br>
+                        📂 Ledningsprocesser<br>
+                        &nbsp;&nbsp;&nbsp;📁 1.1 Strategisk planering<br>
+                        &nbsp;&nbsp;&nbsp;📁 1.2 Verksamhetsstyrning<br>
+                        📂 Huvudprocesser<br>
+                        &nbsp;&nbsp;&nbsp;📁 2.1 Försäljning<br>
+                        &nbsp;&nbsp;&nbsp;📁 2.2 Produktion<br>
+                        📂 Stödprocesser<br>
+                        &nbsp;&nbsp;&nbsp;📁 3.1 Ekonomi<br>
+                        &nbsp;&nbsp;&nbsp;📁 3.2 HR
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">🔍 Skapa vyer</div>
+                    <p>Skapa anpassade vyer för olika behov:</p>
+                    <ul style="margin-left: 20px;">
+                        <li><strong>ISO 9001-vy:</strong> Filtrera dokument taggade med ISO 9001</li>
+                        <li><strong>Granskningsvy:</strong> Dokument som ska granskas inom 30 dagar</li>
+                        <li><strong>Senast ändrade:</strong> Sortera efter ändringsdatum</li>
+                        <li><strong>Min process:</strong> Visa bara dokument från din process</li>
                     </ul>
                 </div>
                 
-                <h3 style="margin-top: 20px;">Exportera mina svar</h3>
-                <button class="button" style="width: 100%;" onclick="exportData()">
-                    <span style="font-size: 1.2em;">💾</span> Ladda ner som JSON
-                </button>
-                
-                <button class="button secondary" style="width: 100%; margin-top: 10px;" onclick="exportAsText()">
-                    <span style="font-size: 1.2em;">📄</span> Ladda ner som textfil
-                </button>
-                
-                <h3 style="margin-top: 25px;">Dela med Copilot</h3>
-                <button class="button" style="width: 100%; background: linear-gradient(135deg, #0078d4 0%, #40e0d0 100%);" onclick="shareData()">
-                    <span style="font-size: 1.2em;">📤</span> Kopiera för delning
-                </button>
-                
-                <button class="button" style="width: 100%; margin-top: 10px; background: linear-gradient(135deg, #0078d4 0%, #40e0d0 100%);" onclick="exportForCopilot()">
-                    <span style="font-size: 1.2em;">🤖</span> Förbered för Copilot-analys
-                </button>
-                
-                <div class="warning-box" style="margin-top: 20px;">
-                    <h3>📊 Använd med Microsoft Copilot</h3>
-                    <ol style="padding-left: 20px; margin-top: 10px;">
-                        <li>Tryck "Förbered för Copilot-analys"</li>
-                        <li>Texten kopieras automatiskt</li>
-                        <li>Öppna Excel eller Word</li>
-                        <li>Klistra in och använd Copilot för att:
-                            <ul style="margin-top: 5px;">
-                                <li>Identifiera gemensamma teman</li>
-                                <li>Skapa kompetenskarta</li>
-                                <li>Analysera framtidsvisioner</li>
-                                <li>Generera handlingsplaner</li>
-                            </ul>
-                        </li>
-                    </ol>
+                <div class="quiz-container">
+                    <div class="quiz-question">Quiz 5: Vad är fördelen med metadata jämfört med mappstruktur?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q5', false)">Metadata tar mindre plats</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q5', true)">Ett dokument kan ha flera metadata-taggar</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q5', false)">Metadata är snabbare</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q5', false)">Det finns ingen skillnad</div>
+                    </div>
+                    <div class="feedback" id="q5-feedback"></div>
                 </div>
                 
-                <div class="info-box" style="margin-top: 20px;">
-                    <h3>💡 Tips</h3>
-                    <p>Exportera regelbundet under konferensen för att inte förlora data. All data sparas lokalt på din telefon tills du rensar webbläsardata.</p>
+                <div class="checklist">
+                    <h3>✅ SharePoint-checklista</h3>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <span>Skapa dokumentbibliotek</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <span>Lägg till metadata-kolumner</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <span>Aktivera versionshantering</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <span>Skapa minst 3 vyer</span>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <input type="checkbox">
+                        <span>Testa uppladdning</span>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="showModule(4)">← Föregående</button>
+                    <button class="btn btn-success" onclick="completeModule(5)">Slutför modul →</button>
                 </div>
             </div>
+            
+            <!-- Module 6: Sökning -->
+            <div id="module6" class="module-content hidden">
+                <div class="module-header">
+                    <h2 class="module-title">Modul 6: Sökning och filtrering</h2>
+                    <p class="module-description">Hitta rätt dokument snabbt och effektivt.</p>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">🔎 Söktips</div>
+                    <div class="info-box">
+                        <strong>Effektiv sökning:</strong><br>
+                        • Använd metadata-filter först<br>
+                        • Kombinera flera filter för precision<br>
+                        • Använd * för wildcard-sökning<br>
+                        • Sök på del av filnamn eller innehåll<br>
+                        • Spara vanliga sökningar som vyer
+                    </div>
+                </div>
+                
+                <div class="content-section">
+                    <div class="section-title">📊 Exempel på sökscenarier</div>
+                    <p><strong>Scenario 1: ISO-revision</strong><br>
+                    Filter: Standard = "ISO 9001" OCH Status = "Gällande"</p>
+                    
+                    <p><strong>Scenario 2: Svetsaudit</strong><br>
+                    Filter: Standard = "ISO 3834" OCH Process = "2.2 Produktion"</p>
+                    
+                    <p><strong>Scenario 3: Årsgenomgång</strong><br>
+                    Filter: Nästa granskning < 3 månader</p>
+                </div>
+                
+                <div class="quiz-container">
+                    <div class="quiz-question">Quiz 6: Du ska hitta alla gällande miljödokument. Vilka filter använder du?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q6', false)">Process = "3.3 Miljö"</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q6', true)">Standard = "ISO 14001" OCH Status = "Gällande"</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q6', false)">Dokumenttyp = "Miljö"</div>
+                        <div class="quiz-option" onclick="checkAnswer(this, 'q6', false)">Sök på "miljö"</div>
+                    </div>
+                    <div class="feedback" id="q6-feedback"></div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="showModule(5)">← Föregående</button>
+                    <button class="btn btn-success" onclick="completeModule(6)">Slutför modul →</button>
+                </div>
+            </div>
+            
+            <!-- Module 7: Sluttest -->
+            <div id="module7" class="module-content hidden">
+                <div class="module-header">
+                    <h2 class="module-title">Modul 7: Sluttest och certifiering</h2>
+                    <p class="module-description">Testa dina kunskaper och få ditt certifikat!</p>
+                </div>
+                
+                <div class="final-test">
+                    <h2>🎯 Sluttest - 10 frågor</h2>
+                    <p>Du behöver minst 7 rätt för att bli godkänd</p>
+                    <button class="btn btn-primary" style="background: white; color: #333; margin-top: 20px;" onclick="startFinalTest()">Starta test</button>
+                </div>
+                
+                <div id="final-questions" class="hidden">
+                    <div class="quiz-container">
+                        <div class="quiz-question">Fråga 1/10: Vad är huvudsyftet med processbaserad dokumenthantering?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="recordAnswer(1, false)">Spara plats på servern</div>
+                            <div class="quiz-option" onclick="recordAnswer(1, true)">Organisera efter hur dokument används</div>
+                            <div class="quiz-option" onclick="recordAnswer(1, false)">Följa ISO-standarder</div>
+                            <div class="quiz-option" onclick="recordAnswer(1, false)">Minska pappersanvändning</div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-container">
+                        <div class="quiz-question">Fråga 2/10: Vilken process skapar direkt värde för kunden?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="recordAnswer(2, false)">Ledningsprocesser</div>
+                            <div class="quiz-option" onclick="recordAnswer(2, true)">Huvudprocesser</div>
+                            <div class="quiz-option" onclick="recordAnswer(2, false)">Stödprocesser</div>
+                            <div class="quiz-option" onclick="recordAnswer(2, false)">Alla processer</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-success" style="margin-top: 30px;" onclick="submitFinalTest()">Lämna in test</button>
+                </div>
+                
+                <div class="certificate" id="certificate">
+                    <h2>🏆 CERTIFIKAT</h2>
+                    <p>Detta intygar att</p>
+                    <div class="name" id="userName">DU</div>
+                    <p>har genomfört utbildningen i</p>
+                    <p><strong>Processbaserad Dokumenthantering<br>med ISO/EN-standarder</strong></p>
+                    <p style="margin-top: 30px;">Datum: <span id="certDate"></span></p>
+                    <button class="btn btn-primary" onclick="window.print()">Skriv ut certifikat</button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="showModule(6)">← Föregående</button>
+                    <button class="btn btn-success" disabled>Slutförd!</button>
+                </div>
+            </div>
+            
         </div>
-    </div>
-    
-    <div class="bottom-nav">
-        <div class="bottom-nav-item active" onclick="showTab('overview')">Start</div>
-        <div class="bottom-nav-item" onclick="showTab('mission')">Varför</div>
-        <div class="bottom-nav-item" onclick="showTab('superpower')">Superkraft</div>
-        <div class="bottom-nav-item" onclick="showTab('timeline')">Historia</div>
     </div>
     
     <script>
-        // Speech recognition setup
-        let recognition = null;
-        let currentField = null;
-        let isRecording = false;
-        
-        // Check for browser support
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.lang = 'sv-SE';
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            
-            recognition.onresult = function(event) {
-                let finalTranscript = '';
-                let interimTranscript = '';
-                
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const transcript = event.results[i][0].transcript;
-                    if (event.results[i].isFinal) {
-                        finalTranscript += transcript + ' ';
-                    } else {
-                        interimTranscript += transcript;
-                    }
-                }
-                
-                if (currentField) {
-                    const field = document.getElementById(currentField);
-                    if (finalTranscript) {
-                        field.value += finalTranscript;
-                    }
-                }
-            };
-            
-            recognition.onerror = function(event) {
-                console.error('Speech recognition error:', event.error);
-                stopRecording();
-                showStatus('Fel vid inspelning. Försök igen.', 'error');
-            };
-            
-            recognition.onend = function() {
-                stopRecording();
-            };
-        }
-        
-        // Recording functions
-        function startRecording(fieldId) {
-            if (!recognition) {
-                showStatus('Din enhet stöder inte röstinspelning', 'error');
-                return;
-            }
-            
-            if (isRecording) {
-                stopRecording();
-                return;
-            }
-            
-            currentField = fieldId;
-            isRecording = true;
-            
-            // Update button appearance
-            const button = event.currentTarget;
-            button.classList.add('recording');
-            const textSpan = document.getElementById(fieldId + '-btn-text');
-            if (textSpan) {
-                textSpan.textContent = 'Stoppa inspelning';
-            }
-            
-            recognition.start();
-        }
-        
-        function stopRecording() {
-            if (!isRecording) return;
-            
-            isRecording = false;
-            if (recognition) {
-                recognition.stop();
-            }
-            
-            // Reset all recording buttons
-            document.querySelectorAll('.voice-button').forEach(btn => {
-                btn.classList.remove('recording');
-            });
-            
-            // Reset button texts
-            document.querySelectorAll('[id$="-btn-text"]').forEach(span => {
-                if (span.id.includes('mission')) {
-                    span.textContent = span.id.includes('1') ? 'Tala in ditt varför' : 'Tala in dina tankar';
-                } else if (span.id.includes('super')) {
-                    span.textContent = 'Tala in';
-                } else if (span.id.includes('history')) {
-                    span.textContent = 'Tala in din historia';
-                } else if (span.id.includes('future')) {
-                    span.textContent = 'Tala in din vision';
-                }
-            });
-        }
-        
-        // Hamburger menu functions
-        function toggleMenu() {
-            const sidebar = document.querySelector('.sidebar');
-            const overlay = document.querySelector('.sidebar-overlay');
-            const hamburger = document.querySelector('.hamburger');
-            
-            sidebar.classList.toggle('show');
-            overlay.classList.toggle('show');
-            hamburger.classList.toggle('active');
-            
-            // Update progress bar in sidebar
-            updateSidebarProgress();
-        }
-        
-        function closeMenu() {
-            const sidebar = document.querySelector('.sidebar');
-            const overlay = document.querySelector('.sidebar-overlay');
-            const hamburger = document.querySelector('.hamburger');
-            
-            sidebar.classList.remove('show');
-            overlay.classList.remove('show');
-            hamburger.classList.remove('active');
-        }
-        
-        function navigateTo(tabName) {
-            // Close menu
-            closeMenu();
-            
-            // Update active menu item
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-            
-            // Show tab
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabName).classList.add('active');
-            
-            // Update bottom nav if exists
-            updateBottomNav(tabName);
-            
-            // Special handling for export tab
-            if (tabName === 'export') {
-                checkSavedData();
-            }
-        }
-        
-        function updateBottomNav(tabName) {
-            const bottomNavMap = {
-                'overview': 0,
-                'mission': 1,
-                'superpower': 2,
-                'timeline': 3
-            };
-            
-            document.querySelectorAll('.bottom-nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            if (bottomNavMap[tabName] !== undefined) {
-                const items = document.querySelectorAll('.bottom-nav-item');
-                if (items[bottomNavMap[tabName]]) {
-                    items[bottomNavMap[tabName]].classList.add('active');
-                }
-            }
-        }
-        
-        function updateSidebarProgress() {
-            const data = loadFromLocal();
-            let completed = 0;
-            const total = 3;
-            
-            if (data.mission && data.mission.length > 0) completed++;
-            if (data.superpower && data.superpower.length > 0) completed++;
-            if (data.timeline && data.timeline.length > 0) completed++;
-            
-            const percentage = Math.round((completed / total) * 100);
-            const progressBar = document.getElementById('sidebarProgress');
-            if (progressBar) {
-                progressBar.style.width = percentage + '%';
-            }
-        }
-        
-        function checkSavedData() {
-            const data = loadFromLocal();
-            const statusEl = document.getElementById('dataStatus');
-            
-            let count = 0;
-            if (data.mission) count += data.mission.length;
-            if (data.superpower) count += data.superpower.length;
-            if (data.timeline) count += data.timeline.length;
-            
-            if (count > 0) {
-                statusEl.textContent = `Du har ${count} sparade svar redo för export.`;
-                statusEl.style.color = '#155724';
-            } else {
-                statusEl.textContent = 'Inga svar sparade ännu.';
-                statusEl.style.color = '#666';
-            }
-        }
-        
-        function exportForCopilot() {
-            const data = loadFromLocal();
-            let copilotText = 'ANALYS FÖR iTID KONFERENS 2025\n\n';
-            copilotText += 'Använd följande data för att:\n';
-            copilotText += '1. Identifiera gemensamma teman i varför-beskrivningar\n';
-            copilotText += '2. Kategorisera superkrafter efter typ\n';
-            copilotText += '3. Analysera framtidsvisioner\n\n';
-            copilotText += '---DATA---\n\n';
-            copilotText += JSON.stringify(data, null, 2);
-            
-            navigator.clipboard.writeText(copilotText);
-            showStatus('Data kopierad och klar för Copilot!', 'success');
-        }
-        
-        function exportAsText() {
-            const data = loadFromLocal();
-            let textContent = 'iTID KONFERENS 2025 - MINA REFLEKTIONER\n';
-            textContent += '=' .repeat(50) + '\n\n';
-            
-            if (data.mission && data.mission.length > 0) {
-                textContent += 'MITT VARFÖR - EN FRAMTID DÄR VI BOR\n';
-                textContent += '-'.repeat(40) + '\n';
-                data.mission.forEach(m => {
-                    textContent += `Datum: ${new Date(m.timestamp).toLocaleString('sv-SE')}\n`;
-                    textContent += `Varför: ${m.varfor}\n`;
-                    if (m.boosta) textContent += `Boosta det orubbliga: ${m.boosta}\n`;
-                    textContent += '\n';
-                });
-            }
-            
-            if (data.superpower && data.superpower.length > 0) {
-                textContent += '\nMIN SUPERKRAFT\n';
-                textContent += '-'.repeat(40) + '\n';
-                data.superpower.forEach(s => {
-                    textContent += `Datum: ${new Date(s.timestamp).toLocaleString('sv-SE')}\n`;
-                    textContent += `Superkraft: ${s.superkraft}\n`;
-                    if (s.energi) textContent += `Energi: ${s.energi}\n`;
-                    if (s.braPA) textContent += `Bra på: ${s.braPA}\n`;
-                    textContent += '\n';
-                });
-            }
-            
-            if (data.timeline && data.timeline.length > 0) {
-                textContent += '\nMIN HISTORIA\n';
-                textContent += '-'.repeat(40) + '\n';
-                data.timeline.forEach(t => {
-                    textContent += `Datum: ${new Date(t.timestamp).toLocaleString('sv-SE')}\n`;
-                    textContent += `Började: ${t.start}\n`;
-                    textContent += `Historia: ${t.historia}\n`;
-                    if (t.framtid) textContent += `Framtidsvision: ${t.framtid}\n`;
-                    textContent += '\n';
-                });
-            }
-            
-            // Create download
-            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `itid_konferens_${new Date().toISOString().split('T')[0]}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            showStatus('Textfil nedladdad!', 'success');
-        }
-        
-        // Update the original tab function to work with new menu
-        function showTab(tabName, bottomNavClick) {
-            if (bottomNavClick) {
-                navigateTo(tabName);
-            }
-        }
-        
-        // Quick text helpers
-        function addQuickText(fieldId, text) {
-            const field = document.getElementById(fieldId);
-            field.value = text + ' ';
-            field.focus();
-        }
-        
-        function clearField(fieldId) {
-            document.getElementById(fieldId).value = '';
-        }
-        
-        // Save functions
-        function saveMissionMobile() {
-            const mission1 = document.getElementById('mission1').value;
-            const mission2 = document.getElementById('mission2').value;
-            
-            if (!mission1) {
-                showStatus('Vänligen fyll i ditt varför först', 'error');
-                return;
-            }
-            
-            const data = {
-                timestamp: new Date().toISOString(),
-                varfor: mission1,
-                boosta: mission2
-            };
-            
-            saveToLocal('mission', data);
-            showStatus('Ditt varför har sparats! ✓', 'success');
-            
-            // Clear fields
-            document.getElementById('mission1').value = '';
-            document.getElementById('mission2').value = '';
-        }
-        
-        function saveSuperpowerMobile() {
-            const super1 = document.getElementById('super1').value;
-            const super2 = document.getElementById('super2').value;
-            const super3 = document.getElementById('super3').value;
-            const super4 = document.getElementById('super4').value;
-            const statement = document.getElementById('superStatement').value;
-            
-            if (!statement) {
-                showStatus('Vänligen formulera din superkraft först', 'error');
-                return;
-            }
-            
-            const data = {
-                timestamp: new Date().toISOString(),
-                energi: super1,
-                braPA: super2,
-                skillnad: super3,
-                garna: super4,
-                superkraft: statement
-            };
-            
-            saveToLocal('superpower', data);
-            showStatus('Din superkraft har sparats! ⚡', 'success');
-            
-            // Clear fields
-            document.getElementById('super1').value = '';
-            document.getElementById('super2').value = '';
-            document.getElementById('super3').value = '';
-            document.getElementById('super4').value = '';
-            document.getElementById('superStatement').value = '';
-        }
-        
-        function saveTimelineMobile() {
-            const startDate = document.getElementById('startDate').value;
-            const history = document.getElementById('history').value;
-            const future = document.getElementById('future').value;
-            
-            if (!startDate || !history) {
-                showStatus('Vänligen fyll i när du började och din historia', 'error');
-                return;
-            }
-            
-            const data = {
-                timestamp: new Date().toISOString(),
-                start: startDate,
-                historia: history,
-                framtid: future
-            };
-            
-            saveToLocal('timeline', data);
-            showStatus('Din historia har sparats! 🌟', 'success');
-            
-            // Clear fields
-            document.getElementById('startDate').value = '';
-            document.getElementById('history').value = '';
-            document.getElementById('future').value = '';
-        }
-        
-        // Local storage functions
-        function saveToLocal(type, data) {
-            let allData = JSON.parse(localStorage.getItem('itid_konferens_2025') || '{}');
-            if (!allData[type]) {
-                allData[type] = [];
-            }
-            allData[type].push(data);
-            localStorage.setItem('itid_konferens_2025', JSON.stringify(allData));
-        }
-        
-        function loadFromLocal() {
-            return JSON.parse(localStorage.getItem('itid_konferens_2025') || '{}');
-        }
-        
-        // Export functions
-        function exportData() {
-            const data = loadFromLocal();
-            const text = JSON.stringify(data, null, 2);
-            
-            // Create download
-            const blob = new Blob([text], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `itid_konferens_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            showStatus('Data exporterad!', 'success');
-        }
-        
-        function shareData() {
-            const data = loadFromLocal();
-            let shareText = 'iTid Konferens 2025 - Mina reflektioner\n\n';
-            
-            if (data.mission && data.mission.length > 0) {
-                shareText += 'MITT VARFÖR:\n' + data.mission[data.mission.length - 1].varfor + '\n\n';
-            }
-            
-            if (data.superpower && data.superpower.length > 0) {
-                shareText += 'MIN SUPERKRAFT:\n' + data.superpower[data.superpower.length - 1].superkraft + '\n\n';
-            }
-            
-            if (data.timeline && data.timeline.length > 0) {
-                shareText += 'MIN VISION:\n' + data.timeline[data.timeline.length - 1].framtid + '\n\n';
-            }
-            
-            // Try to share or copy
-            if (navigator.share) {
-                navigator.share({
-                    title: 'iTid Konferens 2025',
-                    text: shareText
-                }).catch(err => console.log('Share cancelled'));
-            } else {
-                navigator.clipboard.writeText(shareText);
-                showStatus('Kopierat till urklipp!', 'success');
-            }
-        }
-        
-        // Status message
-        function showStatus(message, type) {
-            const statusEl = document.getElementById('statusMessage');
-            statusEl.textContent = message;
-            statusEl.className = 'status-message ' + type;
-            
-            setTimeout(() => {
-                statusEl.className = 'status-message';
-            }, 3000);
-        }
+        // Global state
+        let currentModule = 1;
+        let completedModules = [];
+        let totalPoints = 0;
+        let finalTestAnswers = {};
+        let draggedElement = null;
         
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Check for saved data
-            const savedData = loadFromLocal();
-            if (Object.keys(savedData).length > 0) {
-                console.log('Saved data found:', savedData);
-            }
+            initializeDragDrop();
+            updateProgress();
         });
+        
+        // Module navigation
+        function showModule(moduleNum) {
+            // Hide all modules
+            document.querySelectorAll('.module-content').forEach(m => {
+                m.classList.add('hidden');
+            });
+            
+            // Show selected module
+            document.getElementById('module' + moduleNum).classList.remove('hidden');
+            
+            // Update tab styling
+            document.querySelectorAll('.module-tab').forEach((tab, index) => {
+                tab.classList.remove('active');
+                if (index === moduleNum - 1) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            currentModule = moduleNum;
+        }
+        
+        // Complete module
+        function completeModule(moduleNum) {
+            if (!completedModules.includes(moduleNum)) {
+                completedModules.push(moduleNum);
+                totalPoints += 100;
+                
+                // Mark module as completed
+                document.querySelectorAll('.module-tab')[moduleNum - 1].classList.add('completed');
+                
+                // Update progress
+                updateProgress();
+                
+                // Show next module
+                if (moduleNum < 7) {
+                    alert('🎉 Modul ' + moduleNum + ' slutförd! Du fick 100 poäng!');
+                    showModule(moduleNum + 1);
+                }
+            }
+        }
+        
+        // Update progress bar
+        function updateProgress() {
+            const progress = (completedModules.length / 7) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.round(progress) + '%';
+            
+            document.getElementById('totalPoints').textContent = totalPoints;
+            document.getElementById('completedModules').textContent = completedModules.length;
+        }
+        
+        // Quiz functionality
+        function checkAnswer(element, questionId, isCorrect) {
+            // Disable all options for this question
+            element.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            
+            // Mark selected answer
+            if (isCorrect) {
+                element.classList.add('correct');
+                totalPoints += 25;
+                updateProgress();
+            } else {
+                element.classList.add('incorrect');
+            }
+            
+            // Show feedback
+            const feedback = document.getElementById(questionId + '-feedback');
+            feedback.classList.add('show');
+            
+            if (isCorrect) {
+                feedback.classList.add('success');
+                feedback.innerHTML = '✅ Rätt svar! (+25 poäng)';
+            } else {
+                feedback.classList.add('error');
+                feedback.innerHTML = '❌ Fel svar. Försök igen i nästa modul.';
+            }
+        }
+        
+        // Drag and drop functionality
+        function initializeDragDrop() {
+            // Add event listeners to draggable elements
+            document.querySelectorAll('.draggable').forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+            
+            // Add event listeners to drop zones
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('drop', handleDrop);
+                zone.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+        
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+        }
+        
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            this.classList.add('drag-over');
+            return false;
+        }
+        
+        function handleDragLeave(e) {
+            this.classList.remove('drag-over');
+        }
+        
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            
+            this.classList.remove('drag-over');
+            
+            if (draggedElement) {
+                this.appendChild(draggedElement);
+                draggedElement = null;
+            }
+            
+            return false;
+        }
+        
+        function checkDragDrop() {
+            let correct = 0;
+            let total = 0;
+            
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                const expectedCategory = zone.dataset.accept;
+                const items = zone.querySelectorAll('.draggable');
+                
+                items.forEach(item => {
+                    total++;
+                    if (item.dataset.category === expectedCategory) {
+                        correct++;
+                    }
+                });
+            });
+            
+            const feedback = document.getElementById('drag-feedback');
+            feedback.classList.add('show');
+            
+            if (correct === total && total === 4) {
+                feedback.classList.add('success');
+                feedback.innerHTML = '🎉 Perfekt! Alla dokument är rätt sorterade! (+50 poäng)';
+                totalPoints += 50;
+                updateProgress();
+            } else {
+                feedback.classList.add('error');
+                feedback.innerHTML = `Du har ${correct} av 4 rätt. Försök igen!`;
+            }
+        }
+        
+        // Process details
+        function showProcessDetails(type) {
+            let message = '';
+            switch(type) {
+                case 'leadership':
+                    message = 'LEDNINGSPROCESSER:\nStyr och planerar verksamheten\n- Strategier och policies\n- Mål och uppföljning\n- Ledningens genomgång\n- Förbättringsarbete';
+                    break;
+                case 'main':
+                    message = 'HUVUDPROCESSER:\nSkapar värde för kunden\n- Försäljning och marknadsföring\n- Produktion och tillverkning\n- Kvalitetskontroll\n- Leverans och service';
+                    break;
+                case 'support':
+                    message = 'STÖDPROCESSER:\nStödjer övriga processer\n- Ekonomi och redovisning\n- HR och kompetens\n- IT och system\n- Inköp och logistik';
+                    break;
+            }
+            alert(message);
+        }
+        
+        // Standard selection
+        function selectStandard(element) {
+            element.classList.toggle('selected');
+        }
+        
+        // Metadata validation
+        function validateMetadata() {
+            const process = document.getElementById('process-select').value;
+            const doctype = document.getElementById('doctype-select').value;
+            const status = document.getElementById('status-select').value;
+            const standards = document.getElementById('standards-select').selectedOptions;
+            
+            const feedback = document.getElementById('metadata-feedback');
+            
+            if (process === 'Välj process...' || doctype === 'Välj typ...' || status === 'Välj status...') {
+                feedback.classList.add('show', 'error');
+                feedback.innerHTML = 'Alla fält måste fyllas i!';
+            } else {
+                feedback.classList.add('show', 'success');
+                feedback.innerHTML = '✅ Metadata är korrekt ifyllt! (+25 poäng)';
+                totalPoints += 25;
+                updateProgress();
+            }
+        }
+        
+        // Checklist
+        function toggleCheck(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                element.classList.add('completed');
+            } else {
+                element.classList.remove('completed');
+            }
+        }
+        
+        // Final test
+        function startFinalTest() {
+            document.querySelector('.final-test').classList.add('hidden');
+            document.getElementById('final-questions').classList.remove('hidden');
+        }
+        
+        function recordAnswer(question, isCorrect) {
+            finalTestAnswers[question] = isCorrect;
+        }
+        
+        function submitFinalTest() {
+            let correctAnswers = 0;
+            for (let answer in finalTestAnswers) {
+                if (finalTestAnswers[answer]) correctAnswers++;
+            }
+            
+            if (correctAnswers >= 1) { // Förenklar för demo - normalt skulle vara 7/10
+                document.getElementById('final-questions').classList.add('hidden');
+                document.getElementById('certificate').classList.add('show');
+                document.getElementById('certDate').textContent = new Date().toLocaleDateString('sv-SE');
+                
+                totalPoints += 200;
+                completeModule(7);
+                
+                alert('🎉 Grattis! Du är godkänd med ' + correctAnswers + ' rätt svar!');
+            } else {
+                alert('Du fick ' + correctAnswers + ' rätt. Du behöver minst 7 rätt för att bli godkänd. Försök igen!');
+            }
+        }
     </script>
 </body>
 </html>
